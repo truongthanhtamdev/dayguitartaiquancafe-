@@ -1,0 +1,1819 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#4a3d35" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="description" content="Day Guitar Tai Quan Ca Phe - app hoc guitar 36 buoi: lo trinh, thu vien hop am, metronome, len day dan va may dem hat." />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<title>Dạy Guitar Tại Quán Cà Phê — Học guitar 36 buổi</title>
+<style>
+  :root{
+    /* Bang mau lay tu logo: nen kem, net brass, chu nau espresso */
+    --ink:#3a322c;
+    --muted:#7d7168;
+    --paper:#fffbf2;
+    --surface:#fffefa;
+    --surface-2:#f6efe4;
+    --line:#e9ded0;
+    --brand:#4a3d35;
+    --brand-2:#6b5849;
+    --brand-soft:#f2e9df;
+    --brass:#bd937b;
+    --brass-soft:#f8efe7;
+    --rose:#b3614a;
+    --shadow:0 18px 44px rgba(24,31,24,.13);
+    --radius:14px;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ height:100%; }
+  body{ margin:0; color:var(--ink); background:var(--surface-2); font-size:15px; line-height:1.5; }
+  button,input,select,textarea{ font:inherit; color:inherit; }
+  h1,h2,h3,h4{ margin:0; font-weight:700; letter-spacing:-.01em; }
+  p{ margin:0; }
+
+  .app{
+    max-width:520px; margin:0 auto; min-height:100%;
+    background:var(--paper); position:relative;
+    display:flex; flex-direction:column; box-shadow:var(--shadow);
+  }
+  @media (min-width:560px){
+    body{ padding:22px 0; }
+    .app{ min-height:calc(100vh - 44px); border-radius:22px; overflow:hidden; }
+  }
+
+  .appbar{
+    position:sticky; top:0; z-index:30;
+    background:var(--brand); color:#f4f1e8;
+    padding:14px 18px 12px; display:flex; align-items:center; gap:12px;
+  }
+  .appbar .mark{
+    width:36px; height:36px; border-radius:11px; flex:none;
+    background:var(--paper); object-fit:cover; display:block;
+  }
+  .appbar .who{ flex:1; min-width:0; }
+  .appbar .who b{ display:block; font-size:15px; }
+  .appbar .who span{ display:block; font-size:12px; opacity:.72; }
+  .ghost-btn{
+    border:1px solid rgba(255,255,255,.28); background:rgba(255,255,255,.08);
+    color:inherit; border-radius:999px; padding:7px 13px; font-size:12.5px;
+    cursor:pointer; font-weight:600;
+  }
+  .ghost-btn:active{ transform:scale(.97); }
+
+  .view{ display:none; padding:16px 16px 24px; flex:1; }
+  .view.active{ display:block; animation:fade .22s ease; }
+  @keyframes fade{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:none;} }
+  @media (prefers-reduced-motion:reduce){ *{ animation-duration:.001ms !important; transition-duration:.001ms !important; } }
+
+  .card{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); padding:14px; margin-bottom:12px;
+  }
+  .card-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+  .card-head h3{ font-size:15px; }
+  .eyebrow{ font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); font-weight:700; margin-bottom:6px; }
+  .muted{ color:var(--muted); font-size:13px; }
+  .pill{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:11.5px; font-weight:600; padding:4px 9px; border-radius:999px;
+    background:var(--surface-2); color:var(--muted); border:1px solid var(--line); white-space:nowrap;
+  }
+  .pill.done{ background:var(--brand-soft); color:var(--brand); border-color:#e0d0bd; }
+  .pill.now{ background:var(--brass-soft); color:#8d6526; border-color:#ecd9b4; }
+
+  .progress{ height:8px; border-radius:99px; background:var(--surface-2); overflow:hidden; border:1px solid var(--line); }
+  .progress > i{ display:block; height:100%; background:linear-gradient(90deg,var(--brand-2),var(--brand)); border-radius:99px; transition:width .4s ease; }
+
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .stat{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px; text-align:center; }
+  .stat b{ display:block; font-size:20px; line-height:1.2; }
+  .stat span{ font-size:11px; color:var(--muted); }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:7px;
+    border:1px solid var(--brand); background:var(--brand); color:#f6f3ea;
+    padding:11px 16px; border-radius:11px; font-weight:650; font-size:14px;
+    cursor:pointer; width:100%;
+  }
+  .btn:active{ transform:scale(.985); }
+  .btn.alt{ background:var(--surface); color:var(--brand); }
+  .btn.warn{ background:var(--surface); color:var(--rose); border-color:#e6c6bd; }
+  .btn.sm{ width:auto; padding:8px 13px; font-size:13px; border-radius:9px; }
+  .btn[disabled]{ opacity:.45; cursor:not-allowed; }
+  .btn-row{ display:flex; gap:8px; }
+  .btn-row > *{ flex:1; }
+
+  .stage-head{ display:flex; align-items:baseline; gap:8px; margin:18px 2px 8px; }
+  .stage-head h3{ font-size:14px; }
+  .stage-head span{ font-size:12px; color:var(--muted); }
+  .lesson{
+    display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:11px 12px; margin-bottom:7px; cursor:pointer;
+  }
+  .lesson .no{
+    width:32px; height:32px; flex:none; border-radius:9px; display:grid; place-items:center;
+    background:var(--surface-2); font-weight:700; font-size:13px; color:var(--muted);
+  }
+  .lesson.is-done .no{ background:var(--brand); color:#fff; }
+  .lesson.is-current{ border-color:var(--brass); box-shadow:0 0 0 3px var(--brass-soft); }
+  .lesson.is-current .no{ background:var(--brass); color:#fff; }
+  .lesson .txt{ flex:1; min-width:0; }
+  .lesson .txt b{ display:block; font-size:14px; font-weight:650; }
+  .lesson .txt span{ display:block; font-size:12px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  .tabbar{
+    position:sticky; bottom:0; z-index:30;
+    display:grid; grid-template-columns:repeat(5,1fr);
+    background:rgba(255,253,248,.96); backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+  }
+  .tab{
+    border:0; background:none; cursor:pointer; padding:6px 2px;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    font-size:10.5px; color:var(--muted); font-weight:600;
+  }
+  .tab svg{ width:21px; height:21px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+  .tab.active{ color:var(--brand); }
+
+  .chip-row{ display:flex; gap:6px; overflow-x:auto; padding:2px 0 8px; scrollbar-width:none; }
+  .chip-row::-webkit-scrollbar{ display:none; }
+  .chip{
+    border:1px solid var(--line); background:var(--surface); color:var(--muted);
+    border-radius:999px; padding:6px 12px; font-size:12.5px; font-weight:600;
+    white-space:nowrap; cursor:pointer;
+  }
+  .chip.active{ background:var(--brand); color:#f6f3ea; border-color:var(--brand); }
+  .chord-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:9px; }
+  .chord-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:8px 6px 9px; text-align:center; cursor:pointer;
+  }
+  .chord-card:active{ transform:scale(.97); }
+  .chord-card b{ font-size:14px; }
+  .chord-card small{ display:block; color:var(--muted); font-size:10.5px; margin-top:1px; }
+  .chord-card svg{ width:100%; height:auto; display:block; margin:2px auto 4px; }
+  .chord-card.learned{ border-color:#e0d0bd; background:linear-gradient(180deg,#fff,var(--brand-soft)); }
+
+  .tool-tabs{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:12px; }
+  .tool-tabs button{
+    border:1px solid var(--line); background:var(--surface); border-radius:10px;
+    padding:9px 4px; font-size:12.5px; font-weight:650; color:var(--muted); cursor:pointer;
+  }
+  .tool-tabs button.active{ background:var(--brand); color:#f6f3ea; border-color:var(--brand); }
+  .tool{ display:none; }
+  .tool.active{ display:block; }
+
+  .bpm{ text-align:center; padding:6px 0 10px; }
+  .bpm b{ font-size:52px; font-weight:800; letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums; }
+  .bpm span{ display:block; font-size:12px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; }
+  input[type=range]{ width:100%; accent-color:var(--brand); }
+  .beats{ display:flex; gap:7px; justify-content:center; margin:14px 0 4px; }
+  .beat{ width:13px; height:13px; border-radius:50%; background:var(--surface-2); border:1px solid var(--line); transition:transform .08s, background .08s; }
+  .beat.on{ background:var(--brand-2); transform:scale(1.35); }
+  .beat.on.accent{ background:var(--brass); }
+
+  .tuner-dial{ position:relative; height:118px; margin:6px 0 2px; }
+  .tuner-dial .scale{ position:absolute; left:0; right:0; bottom:34px; height:2px; background:var(--line); }
+  .tuner-dial .zero{ position:absolute; left:50%; bottom:24px; width:2px; height:22px; background:var(--brand); transform:translateX(-50%); }
+  .tuner-needle{
+    position:absolute; bottom:20px; left:50%; width:4px; height:44px; border-radius:4px;
+    background:var(--rose); transform:translateX(-50%); transition:left .1s linear, background .15s;
+  }
+  .tuner-note{ position:absolute; top:4px; left:0; right:0; text-align:center; }
+  .tuner-note b{ font-size:42px; line-height:1; letter-spacing:-.03em; }
+  .tuner-note span{ display:block; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .tuner-note.ok b{ color:var(--brand-2); }
+  .strings{ display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin-top:10px; }
+  .strings button{
+    border:1px solid var(--line); background:var(--surface); border-radius:10px;
+    padding:9px 2px; cursor:pointer; font-weight:700; font-size:14px;
+  }
+  .strings button small{ display:block; font-size:9.5px; color:var(--muted); font-weight:600; }
+  .strings button.hit{ border-color:var(--brand); background:var(--brand-soft); }
+
+  .strum-view{ display:flex; gap:5px; justify-content:center; margin:12px 0 6px; flex-wrap:wrap; }
+  .strum-slot{
+    width:30px; height:44px; border-radius:8px; border:1px solid var(--line);
+    background:var(--surface); display:grid; place-items:center;
+    font-size:15px; font-weight:700; color:var(--muted);
+  }
+  .strum-slot.empty{ color:#cfcabd; }
+  .strum-slot.on{ background:var(--brand); color:#fff; border-color:var(--brand); }
+  .now-chord{ text-align:center; padding:4px 0 2px; }
+  .now-chord b{ font-size:44px; line-height:1; letter-spacing:-.03em; }
+  .now-chord span{ display:block; font-size:12px; color:var(--muted); }
+  .prog-row{ display:flex; gap:6px; justify-content:center; margin-top:8px; flex-wrap:wrap; }
+  .prog-row .pc{ padding:6px 11px; border-radius:9px; border:1px solid var(--line); background:var(--surface); font-weight:650; font-size:13px; }
+  .prog-row .pc.active{ background:var(--brass); color:#fff; border-color:var(--brass); }
+
+  .field{ display:block; margin-bottom:10px; }
+  .field b{ display:block; font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:650; }
+  select, input[type=text]{ width:100%; padding:10px 11px; border-radius:10px; border:1px solid var(--line); background:var(--surface); }
+
+  /* ---------- màn hình chi tiết ---------- */
+  .backbar{
+    display:flex; align-items:center; gap:6px; margin:-4px 0 12px;
+    font-size:13px; font-weight:650; color:var(--muted);
+    background:none; border:0; padding:4px 0; cursor:pointer;
+  }
+  .backbar:active{ transform:translateX(-2px); }
+  .hero{
+    background:linear-gradient(155deg,#5b4b40,#42362f); border:1px solid var(--brand);
+    color:#f2efe5; border-radius:var(--radius); padding:16px; margin-bottom:12px;
+  }
+  .hero .eyebrow{ color:rgba(242,239,229,.6); }
+  .hero h2{ font-size:21px; margin-bottom:5px; }
+  .hero p{ font-size:13.5px; opacity:.84; }
+  .hero .done-flag{
+    display:inline-flex; align-items:center; gap:6px; margin-top:10px;
+    font-size:12.5px; font-weight:650; color:var(--brass);
+  }
+  .chord-row{
+    display:flex; gap:12px; align-items:flex-start;
+    border:1px solid var(--line); background:var(--surface-2);
+    border-radius:12px; padding:10px; margin-bottom:8px;
+  }
+  .chord-row > button{
+    flex:none; width:92px; background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; padding:6px; cursor:pointer;
+  }
+  .chord-row .info{ flex:1; min-width:0; }
+  .chord-row .info b{ font-size:15px; }
+  .chord-row .info .notes{ font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums; margin-top:2px; }
+  .chord-row .info .tip{ font-size:13px; margin-top:5px; }
+  .pager{ display:flex; gap:8px; margin-top:12px; }
+  .pager a{
+    flex:1; text-decoration:none; background:var(--surface); border:1px solid var(--line);
+    border-radius:12px; padding:11px 12px; cursor:pointer; display:block;
+  }
+  .pager a.next{ text-align:right; }
+  .pager a small{ display:block; font-size:11px; color:var(--muted); font-weight:650; }
+  .pager a b{ display:block; font-size:13.5px; font-weight:650; margin-top:1px; }
+  .pager .spacer{ flex:1; }
+
+  .log-row{
+    display:flex; gap:10px; padding:11px 0; border-bottom:1px solid var(--line);
+  }
+  .log-row:last-child{ border-bottom:0; }
+  .log-row .when{ flex:none; width:78px; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; padding-top:2px; }
+  .log-row .what{ flex:1; min-width:0; font-size:13.5px; }
+  .log-row .what .pill{ margin-top:4px; }
+  .log-row .del{
+    flex:none; background:none; border:0; color:var(--muted); cursor:pointer;
+    font-size:17px; line-height:1; padding:2px 4px;
+  }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .form-grid .full{ grid-column:1 / -1; }
+  input[type=date], input[type=number]{
+    width:100%; padding:10px 11px; border-radius:10px;
+    border:1px solid var(--line); background:var(--surface);
+  }
+  textarea{
+    width:100%; padding:10px 11px; border-radius:10px; min-height:64px; resize:vertical;
+    border:1px solid var(--line); background:var(--surface);
+  }
+
+  .sheet-wrap{ position:fixed; inset:0; z-index:60; display:none; background:rgba(20,24,20,.42); }
+  .sheet-wrap.open{ display:block; }
+  .sheet{
+    position:absolute; left:50%; bottom:0; transform:translateX(-50%);
+    width:min(520px,100%); max-height:88vh; overflow:auto;
+    background:var(--paper); border-radius:20px 20px 0 0;
+    padding:8px 16px calc(20px + env(safe-area-inset-bottom));
+    animation:up .24s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes up{ from{ transform:translate(-50%,26px); opacity:0;} to{ transform:translate(-50%,0); opacity:1;} }
+  .grab{ width:38px; height:4px; border-radius:9px; background:var(--line); margin:6px auto 12px; }
+  .sheet h2{ font-size:20px; margin-bottom:4px; }
+  .kv{ display:flex; gap:9px; padding:9px 0; border-bottom:1px solid var(--line); font-size:13.5px; }
+  .kv b{ flex:none; width:86px; color:var(--muted); font-size:12px; font-weight:650; padding-top:1px; }
+  .toast{
+    position:fixed; left:50%; bottom:90px; transform:translateX(-50%);
+    background:var(--ink); color:#f6f3ea; padding:10px 16px; border-radius:11px;
+    font-size:13px; z-index:80; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
+    max-width:88vw; text-align:center;
+  }
+  .toast.show{ opacity:1; transform:translate(-50%,-6px); }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="appbar">
+    <img class="mark" src="logo.png" alt="Dạy Guitar Tại Quán Cà Phê" width="36" height="36" />
+    <div class="who">
+      <b id="hello">Guitar Cà Phê</b>
+      <span id="subhello">Lộ trình 36 buổi · đệm hát cơ bản</span>
+    </div>
+    <button class="ghost-btn" id="btnPanic" title="Tắt mọi âm thanh">Dừng tiếng</button>
+  </header>
+
+  <!-- ============ HÔM NAY ============ -->
+  <section class="view active" id="view-today">
+    <div class="card" style="background:linear-gradient(155deg,#5b4b40,#42362f); border-color:#42362f; color:#f7f1e8;">
+      <div class="eyebrow" style="color:rgba(242,239,229,.6)">Buổi kế tiếp</div>
+      <h2 id="todayTitle" style="font-size:21px; margin-bottom:5px;">Bài 01 · Làm quen guitar</h2>
+      <p id="todayGoal" style="font-size:13.5px; opacity:.82; margin-bottom:12px;">Tư thế ngồi, cách cầm đàn, tên dây.</p>
+      <div class="progress" style="background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.2)">
+        <i id="todayBar" style="width:0%; background:var(--brass)"></i>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:11.5px; opacity:.75; margin:6px 0 12px;">
+        <span id="todayCount">0 / 36 buổi</span><span id="todayStage">Chặng 1</span>
+      </div>
+      <button class="btn" id="btnOpenToday" style="background:var(--brass); border-color:var(--brass); color:#fff;">Mở buổi học</button>
+    </div>
+
+    <div class="stat-row" style="margin-bottom:12px;">
+      <div class="stat"><b id="stStreak">0</b><span>ngày liên tiếp</span></div>
+      <div class="stat"><b id="stMinutes">0</b><span>phút hôm nay</span></div>
+      <div class="stat"><b id="stChords">0</b><span>hợp âm thuộc</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Luyện 10 phút hôm nay</h3>
+        <span class="pill" id="drillPill">Chưa xong</span>
+      </div>
+      <p class="muted" id="drillText" style="margin-bottom:11px;">Luyện vòng Am - C - G - Em, giữ đều nhịp và chuyển sạch tiếng.</p>
+      <div class="btn-row">
+        <button class="btn alt" id="btnDrillMetro">Mở metronome</button>
+        <button class="btn" id="btnDrillDone">Đã luyện xong</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Hợp âm của buổi này</h3></div>
+      <div class="chord-grid" id="todayChords"></div>
+    </div>
+
+    <button class="card" id="classCard" style="width:100%; text-align:left; cursor:pointer; display:block;">
+      <div class="card-head">
+        <h3 id="classCardName">Lớp học của tôi</h3>
+        <span class="pill" id="classCardNext">Chưa có lịch</span>
+      </div>
+      <p class="muted" id="classCardMeta" style="margin-bottom:9px;">Bấm để thêm thông tin lớp bạn đang học.</p>
+      <div class="progress"><i id="classCardBar" style="width:0%"></i></div>
+      <p class="muted" id="classCardPkg" style="margin-top:6px; font-size:12px;">Chưa có gói buổi</p>
+    </button>
+  </section>
+
+  <!-- ============ CHI TIẾT BUỔI HỌC ============ -->
+  <section class="view" id="view-lesson">
+    <button class="backbar" id="lessonBack">← Lộ trình 36 buổi</button>
+    <div id="lessonDetail"></div>
+  </section>
+
+  <!-- ============ CHI TIẾT LỚP HỌC ============ -->
+  <section class="view" id="view-class">
+    <button class="backbar" data-back="today">← Hôm nay</button>
+
+    <div class="hero">
+      <div class="eyebrow">Lớp đang theo học</div>
+      <h2 id="clsName">Chưa đặt tên lớp</h2>
+      <p id="clsMeta">Thêm thông tin lớp để app nhắc bạn buổi kế tiếp.</p>
+      <p class="done-flag" id="clsNext" hidden></p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Gói buổi</h3>
+        <span class="pill" id="clsPkgPill">Chưa có gói</span>
+      </div>
+      <div class="progress"><i id="clsPkgBar" style="width:0%"></i></div>
+      <p class="muted" id="clsPkgText" style="margin-top:7px;">Nhập tổng số buổi ở phần thông tin bên dưới.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Nhật ký buổi học</h3>
+        <span class="pill" id="clsLogCount">0 buổi</span>
+      </div>
+      <div id="clsLog"></div>
+      <button class="btn alt" id="btnAddLog" style="margin-top:10px;">+ Ghi một buổi học</button>
+    </div>
+
+    <div class="card" id="logForm" hidden>
+      <div class="card-head"><h3>Ghi buổi học</h3></div>
+      <div class="form-grid">
+        <label class="field"><b>Ngày học</b><input type="date" id="logDate" /></label>
+        <label class="field"><b>Tình trạng</b>
+          <select id="logStatus">
+            <option value="done">Đã học</option>
+            <option value="makeup">Học bù</option>
+            <option value="off">Nghỉ</option>
+          </select>
+        </label>
+        <label class="field full"><b>Nội dung buổi học</b>
+          <textarea id="logNote" placeholder="Ví dụ: tập chuyển Am - C - G - Em, cô nhắc giữ cổ tay thẳng."></textarea>
+        </label>
+      </div>
+      <div class="btn-row">
+        <button class="btn alt" id="btnCancelLog">Huỷ</button>
+        <button class="btn" id="btnSaveLog">Lưu buổi học</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Thông tin lớp</h3></div>
+      <div class="form-grid">
+        <label class="field full"><b>Tên lớp / chi nhánh</b>
+          <input type="text" id="clsInName" placeholder="Lớp cơ bản A12 — Nguyễn Trãi" />
+        </label>
+        <label class="field"><b>Giáo viên</b><input type="text" id="clsInTeacher" placeholder="Cô Linh" /></label>
+        <label class="field"><b>Hình thức</b>
+          <select id="clsInForm">
+            <option>Lớp nhóm</option>
+            <option>Học 1 kèm 1</option>
+            <option>Tự học tại nhà</option>
+          </select>
+        </label>
+        <label class="field"><b>Thứ học</b>
+          <select id="clsInDay">
+            <option value="-1">Chưa cố định</option>
+            <option value="1">Thứ 2</option><option value="2">Thứ 3</option>
+            <option value="3">Thứ 4</option><option value="4">Thứ 5</option>
+            <option value="5">Thứ 6</option><option value="6">Thứ 7</option>
+            <option value="0">Chủ nhật</option>
+          </select>
+        </label>
+        <label class="field"><b>Giờ học</b><input type="text" id="clsInTime" placeholder="19:00" /></label>
+        <label class="field"><b>Tổng số buổi của gói</b>
+          <input type="number" id="clsInTotal" min="0" max="200" placeholder="36" />
+        </label>
+        <label class="field"><b>Đã học trước khi dùng app</b>
+          <input type="number" id="clsInUsed" min="0" max="200" placeholder="0" />
+        </label>
+      </div>
+      <button class="btn" id="btnSaveClass">Lưu thông tin lớp</button>
+    </div>
+  </section>
+
+  <!-- ============ LỘ TRÌNH ============ -->
+  <section class="view" id="view-path">
+    <div class="card">
+      <div class="card-head">
+        <h3>Tiến độ khoá cơ bản</h3>
+        <span class="pill done" id="pathPill">0 / 36</span>
+      </div>
+      <div class="progress"><i id="pathBar" style="width:0%"></i></div>
+      <p class="muted" style="margin-top:8px;">Hoàn thành 36 buổi để tự đệm hát với 14 hợp âm trưởng/thứ, Slow Rock, Ballad và quạt chả.</p>
+    </div>
+    <div class="chip-row" id="stageChips"></div>
+    <div id="lessonList"></div>
+  </section>
+
+  <!-- ============ HỢP ÂM ============ -->
+  <section class="view" id="view-chords">
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-head"><h3>Thư viện hợp âm</h3><span class="pill" id="chordPill">0 thuộc</span></div>
+      <p class="muted">Chạm vào hợp âm để nghe tiếng đàn mẫu và xem thế bấm chi tiết.</p>
+    </div>
+    <div class="chip-row" id="chordChips"></div>
+    <div class="chord-grid" id="chordGrid"></div>
+  </section>
+
+  <!-- ============ LUYỆN TẬP ============ -->
+  <section class="view" id="view-practice">
+    <div class="tool-tabs">
+      <button data-tool="metro" class="active">Metronome</button>
+      <button data-tool="tuner">Lên dây</button>
+      <button data-tool="strum">Đệm hát</button>
+    </div>
+
+    <div class="tool active" id="tool-metro">
+      <div class="card">
+        <div class="bpm"><b id="bpmVal">70</b><span id="bpmName">Chậm - tập chuyển hợp âm</span></div>
+        <input type="range" id="bpmRange" min="40" max="200" step="1" value="70" />
+        <div class="btn-row" style="margin-top:10px;">
+          <button class="btn alt sm" style="flex:none;width:44px" id="bpmDown">−</button>
+          <button class="btn" id="metroToggle">Bắt đầu</button>
+          <button class="btn alt sm" style="flex:none;width:44px" id="bpmUp">+</button>
+        </div>
+        <div class="beats" id="beatDots"></div>
+      </div>
+      <div class="card">
+        <label class="field"><b>Số phách mỗi ô nhịp</b>
+          <select id="metroBeats">
+            <option value="4" selected>4/4 — Ballad, quạt chả</option>
+            <option value="3">3/4 — Valse</option>
+            <option value="6">6/8 — Slow Rock</option>
+            <option value="2">2/4 — hành khúc</option>
+          </select>
+        </label>
+        <button class="btn alt" id="btnTap">Gõ nhịp theo tay (tap tempo)</button>
+        <p class="muted" style="margin-top:8px;">Mẹo: tập chuyển hợp âm ở 60-70 bpm trước, chỉ tăng tốc khi 3 vòng liền không vấp.</p>
+      </div>
+    </div>
+
+    <div class="tool" id="tool-tuner">
+      <div class="card">
+        <div class="tuner-dial">
+          <div class="tuner-note" id="tunerNote"><b>—</b><span>Bấm bật mic rồi gảy từng dây</span></div>
+          <div class="scale"></div>
+          <div class="zero"></div>
+          <div class="tuner-needle" id="tunerNeedle"></div>
+        </div>
+        <button class="btn" id="tunerToggle">Bật mic để lên dây</button>
+        <p class="muted" style="margin-top:8px; text-align:center;" id="tunerHint">Cần cho phép quyền micro. Gảy 1 dây, giữ đàn gần mic.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Nghe nốt mẫu</h3></div>
+        <div class="strings" id="stringRefs"></div>
+        <p class="muted" style="margin-top:9px;">Thứ tự dây 6 → 1: E A D G B E. Dây 6 to nhất nằm trên cùng khi ôm đàn.</p>
+      </div>
+    </div>
+
+    <div class="tool" id="tool-strum">
+      <div class="card">
+        <div class="now-chord"><b id="strumChord">Am</b><span id="strumStyleName">Slow Rock · 6/8</span></div>
+        <div class="strum-view" id="strumView"></div>
+        <div class="prog-row" id="progRow"></div>
+        <div class="btn-row" style="margin-top:12px;">
+          <button class="btn" id="strumToggle">Bắt đầu đệm</button>
+        </div>
+      </div>
+      <div class="card">
+        <label class="field"><b>Kiểu đệm</b><select id="strumStyle"></select></label>
+        <label class="field"><b>Vòng hợp âm</b><select id="strumProg"></select></label>
+        <label class="field"><b>Tốc độ</b><input type="range" id="strumBpm" min="50" max="140" value="72" /></label>
+        <p class="muted" id="strumBpmLabel">72 bpm</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TÀI KHOẢN ============ -->
+  <section class="view" id="view-me">
+    <div class="card">
+      <div class="card-head"><h3>Học viên</h3></div>
+      <label class="field"><b>Tên hiển thị</b><input type="text" id="nameInput" placeholder="Nhập tên của bạn" /></label>
+      <label class="field"><b>Chi nhánh đang học</b>
+        <select id="branchInput">
+          <option>Nguyễn Trãi — khu acoustic tầng 2</option>
+          <option>Phan Xích Long — phòng nhóm</option>
+          <option>Tự học tại nhà</option>
+        </select>
+      </label>
+      <button class="btn" id="btnSaveProfile">Lưu thông tin</button>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Thống kê</h3></div>
+      <div class="stat-row">
+        <div class="stat"><b id="meLessons">0</b><span>buổi xong</span></div>
+        <div class="stat"><b id="meChords">0</b><span>hợp âm</span></div>
+        <div class="stat"><b id="meDays">0</b><span>ngày luyện</span></div>
+      </div>
+      <p class="muted" style="margin-top:10px;" id="meStage">Đang ở chặng 1 — làm quen đàn và nhịp.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Dữ liệu</h3></div>
+      <p class="muted" style="margin-bottom:10px;">Tiến độ lưu ngay trên máy này (localStorage), không cần tài khoản.</p>
+      <div class="btn-row">
+        <button class="btn alt" id="btnExport">Xuất tiến độ</button>
+        <button class="btn warn" id="btnReset">Xoá tiến độ</button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabbar" id="tabbar">
+    <button class="tab active" data-view="today">
+      <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Hôm nay
+    </button>
+    <button class="tab" data-view="path">
+      <svg viewBox="0 0 24 24"><path d="M6 4v10"/><circle cx="6" cy="17.5" r="2.5"/><path d="M18 20V10"/><circle cx="18" cy="6.5" r="2.5"/></svg>Lộ trình
+    </button>
+    <button class="tab" data-view="chords">
+      <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 3v18M12 3v18M16 3v18M4 9h16M4 15h16"/></svg>Hợp âm
+    </button>
+    <button class="tab" data-view="practice">
+      <svg viewBox="0 0 24 24"><path d="M12 3v11"/><circle cx="9" cy="17" r="3"/><path d="M12 5.5 18 4v9"/></svg>Luyện tập
+    </button>
+    <button class="tab" data-view="me">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.2-4 4-6 7.5-6s6.3 2 7.5 6"/></svg>Tôi
+    </button>
+  </nav>
+</div>
+
+<div class="sheet-wrap" id="sheetWrap">
+  <div class="sheet" id="sheet"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* =====================================================================
+   1. DỮ LIỆU — 36 buổi học, chia 6 chặng
+   ===================================================================== */
+const STAGES = [
+  { id:1, name:"Làm quen đàn và nhịp",        tag:"Nền tảng",   range:[1,6],   note:"Cầm đàn đúng, đọc hợp âm và chơi những vòng đầu tiên." },
+  { id:2, name:"14 hợp âm trưởng/thứ",        tag:"14 hợp âm",  range:[7,14],  note:"Mở rộng vốn hợp âm để bắt đầu đệm được nhiều bài phổ biến." },
+  { id:3, name:"Điệu Slow Rock",              tag:"Slow Rock",  range:[15,20], note:"Vào nhịp đệm hát đầu tiên: chậm, đều và dễ hát theo." },
+  { id:4, name:"Điệu Ballad",                 tag:"Ballad",     range:[21,26], note:"Đệm mềm hơn, giữ cảm xúc và không làm gãy lời hát." },
+  { id:5, name:"Quạt chả và ứng dụng bài hát",tag:"Quạt chả",   range:[27,32], note:"Chắc tay phải hơn và áp dụng vào bài phổ thông." },
+  { id:6, name:"Hoàn thiện đệm hát cơ bản",   tag:"Tốt nghiệp", range:[33,36], note:"Ôn, sửa lỗi và hoàn thành bài tốt nghiệp." }
+];
+
+const LESSONS = [
+  {n:1,  t:"Làm quen guitar",        d:"Tư thế ngồi, cách cầm đàn, tên dây.",                 r:"Biết cầm đàn đúng và gảy từng dây rõ tiếng.",           p:"Gảy dây 1-6 chậm, đều 5 phút/ngày.",                    c:[],                    bpm:60},
+  {n:2,  t:"Tay trái và tay phải",   d:"Bấm phím, móng/tay gảy, tránh rè tiếng.",             r:"Bấm được nốt đơn và nghe ra tiếng sạch/rè.",            p:"Bấm từng ngăn trên dây 1 và dây 2.",                    c:[],                    bpm:60},
+  {n:3,  t:"Đọc sơ đồ hợp âm",       d:"Ký hiệu dây, phím, ngón tay, dây không đánh.",        r:"Tự nhìn chart và đặt tay theo sơ đồ.",                  p:"Đọc 5 sơ đồ hợp âm mẫu trong app.",                     c:["Em","Am","C","G","D"], bpm:60},
+  {n:4,  t:"Nhịp và phách",          d:"Đếm 1-2-3-4, vỗ nhịp, giữ tempo chậm.",               r:"Giữ nhịp đều khi gảy xuống.",                           p:"Bật metronome 60 bpm và gảy xuống 4 phách.",            c:[],                    bpm:60},
+  {n:5,  t:"Hợp âm Em và Am",        d:"Hai hợp âm thứ dễ nhất cho người mới.",               r:"Bấm và chuyển Em - Am chậm, sạch tiếng.",               p:"Chuyển Em - Am 30 vòng/ngày.",                          c:["Em","Am"],           bpm:60},
+  {n:6,  t:"Hợp âm C và G",          d:"Thêm hai hợp âm trưởng thường gặp.",                  r:"Chơi vòng C - G - Am - Em chậm.",                       p:"Quay video 45 giây vòng C - G - Am - Em.",              c:["C","G"],             bpm:62},
+  {n:7,  t:"Hợp âm D và Dm",         d:"Tập cụm dây dưới và kiểm soát dây không đánh.",       r:"Bấm được D, Dm và chuyển từ Am sang Dm.",               p:"Am - Dm - G - C, 20 vòng.",                             c:["D","Dm"],            bpm:64},
+  {n:8,  t:"Hợp âm A và E",          d:"Nhóm hợp âm mở dùng nhiều trong giọng A/E.",          r:"Chuyển A - E - D đúng nhịp chậm.",                      p:"A - E - D - A với metronome 65 bpm.",                   c:["A","E"],             bpm:65},
+  {n:9,  t:"Hợp âm F và Fmaj7",      d:"Làm quen thế bấm khó hơn trước khi chặn.",            r:"Biết phương án F dễ để ghép bài hát cơ bản.",           p:"C - Fmaj7 - G - C, giữ tiếng sạch.",                    c:["Fmaj7","F"],         bpm:64},
+  {n:10, t:"Hợp âm Bm đơn giản",     d:"Làm quen hợp âm cần lực tay và chuyển chậm.",         r:"Chơi được Bm phiên bản dễ trong vòng cơ bản.",          p:"G - D - Em - Bm chậm, 15 vòng.",                        c:["Bm dễ","Bm"],        bpm:62},
+  {n:11, t:"Hợp âm G7 và E7",        d:"Thêm màu dominant để kết câu bài hát.",               r:"Biết dùng G7/E7 trong vòng đệm đơn giản.",              p:"C - Am - Dm - G7, 20 vòng.",                            c:["G7","E7"],           bpm:66},
+  {n:12, t:"Chuyển Am - C - G - Em", d:"Luyện chuyển mượt giữa các hợp âm đã học.",           r:"Không dừng quá lâu khi đổi hợp âm.",                    p:"Luyện 10 phút/ngày, ghi âm kiểm tra nhịp.",             c:["Am","C","G","Em"],   bpm:68},
+  {n:13, t:"Chuyển C - G - D - Em",  d:"Vòng hợp âm phổ biến trong nhiều bài hát.",           r:"Chơi vòng 4 hợp âm liên tục trong 1 phút.",             p:"Quay video vòng C - G - D - Em.",                       c:["C","G","D","Em"],    bpm:70},
+  {n:14, t:"Ôn 14 hợp âm",           d:"Kiểm tra tất cả hợp âm trưởng/thứ đã học.",           r:"Nhớ mặt hợp âm và chuyển được theo vòng ngắn.",         p:"Checklist 14 hợp âm trong app.",                        c:[],                    bpm:70},
+  {n:15, t:"Nhịp Slow Rock",         d:"Đếm nhịp, cảm giác phách mạnh và nhẹ.",               r:"Gảy được mẫu Slow Rock cơ bản ở tempo chậm.",           p:"Metronome 60 bpm, lặp 3 phút không dừng.",              c:["Am","C"],            bpm:60},
+  {n:16, t:"Slow Rock: Am - C - G - Em", d:"Ghép mẫu đệm vào vòng hợp âm quen.",              r:"Vừa đổi hợp âm vừa giữ mẫu đệm đều.",                   p:"Quay 60 giây vòng Am - C - G - Em.",                    c:["Am","C","G","Em"],   bpm:64},
+  {n:17, t:"Slow Rock: C - G - Am - F",  d:"Luyện vòng pop/ballad phổ biến.",                 r:"Đệm được đoạn verse đơn giản của bài hát.",             p:"Chơi 2 vòng không vấp nhịp.",                           c:["C","G","Am","F"],    bpm:66},
+  {n:18, t:"Ghép lời hát đơn giản",  d:"Vừa đệm vừa hát hoặc ngân giai điệu.",                r:"Biết đặt hợp âm đúng vị trí lời bài hát.",              p:"Chọn 1 bài dễ và đánh dấu điểm đổi hợp âm.",            c:[],                    bpm:66},
+  {n:19, t:"Sửa lỗi nhịp Slow Rock", d:"Chậm nhịp, nhanh nhịp, đổi hợp âm bị khựng.",         r:"Tự nghe lỗi và quay lại tempo chậm.",                   p:"Ghi âm 2 bản: chậm và tốc độ mục tiêu.",                c:[],                    bpm:62},
+  {n:20, t:"Kiểm tra Slow Rock",     d:"Đệm một bài ngắn với vòng hợp âm đã học.",            r:"Đệm được bài đầu tiên ở mức cơ bản.",                   p:"Nộp video Slow Rock 1 đoạn verse/điệp khúc.",           c:[],                    bpm:68},
+  {n:21, t:"Nhịp Ballad cơ bản",     d:"Mẫu rải/quạt nhẹ cho bài chậm.",                      r:"Chơi được mẫu Ballad chậm và đều.",                     p:"Lặp mẫu Ballad 5 phút với C.",                          c:["C"],                 bpm:66},
+  {n:22, t:"Ballad: C - G - Am - F", d:"Ghép hợp âm vào mẫu đệm mềm.",                        r:"Đệm được vòng Ballad phổ biến.",                        p:"C - G - Am - F, 20 vòng chậm.",                         c:["C","G","Am","F"],    bpm:70},
+  {n:23, t:"Ballad: G - D - Em - C", d:"Vòng hợp âm dễ ứng dụng cho nhiều bài.",              r:"Chuyển hợp âm mượt khi tay phải vẫn giữ nhịp.",         p:"Quay 60 giây vòng G - D - Em - C.",                     c:["G","D","Em","C"],    bpm:72},
+  {n:24, t:"Đệm hát Ballad",         d:"Đặt hợp âm theo câu hát, vào đúng ô nhịp.",           r:"Đệm và hát được một đoạn ngắn không mất nhịp.",         p:"Tập 1 bài Ballad yêu thích ở tempo chậm.",              c:[],                    bpm:72},
+  {n:25, t:"Tăng giảm lực tay phải", d:"Nhấn nhẹ verse, mạnh hơn điệp khúc.",                 r:"Biết làm bài hát có sắc thái hơn.",                     p:"Đánh cùng vòng hợp âm với 2 mức lực khác nhau.",        c:[],                    bpm:72},
+  {n:26, t:"Kiểm tra Ballad",        d:"Đệm một bài chậm có verse và điệp khúc.",             r:"Đệm hát Ballad cơ bản, đều và dễ nghe.",                p:"Nộp video Ballad 90 giây.",                             c:[],                    bpm:74},
+  {n:27, t:"Kỹ thuật quạt chả",      d:"Hướng xuống/lên, cổ tay thả lỏng.",                   r:"Quạt được mẫu cơ bản không bị cứng tay.",               p:"Quạt dây chết 5 phút để ổn tay phải.",                  c:[],                    bpm:76},
+  {n:28, t:"Quạt chả: C - G - Am - F", d:"Ghép tay phải vào vòng hợp âm quen.",               r:"Đổi hợp âm không làm rơi nhịp quạt.",                   p:"Chơi 20 vòng, ưu tiên đều nhịp.",                       c:["C","G","Am","F"],    bpm:80},
+  {n:29, t:"Nhấn và ngắt",           d:"Tạo điểm nhấn cho điệp khúc.",                        r:"Biết làm mẫu quạt có groove rõ hơn.",                   p:"Luyện nhấn phách 2 và 4 ở tempo chậm.",                 c:[],                    bpm:78},
+  {n:30, t:"Ứng dụng bài vui/nhanh", d:"Chọn bài có tiết tấu rõ để tập quạt.",                r:"Đệm được đoạn điệp khúc năng lượng hơn.",               p:"Nộp video 60 giây điệp khúc.",                          c:[],                    bpm:88},
+  {n:31, t:"Đổi Ballad ↔ quạt chả",  d:"Verse nhẹ, điệp khúc mạnh.",                          r:"Biết đổi kiểu đệm theo cấu trúc bài hát.",              p:"Tập 1 verse Ballad và 1 chorus quạt chả.",              c:[],                    bpm:82},
+  {n:32, t:"Kiểm tra quạt chả",      d:"Đệm một bài ngắn với kỹ thuật nhấn/ngắt.",            r:"Chơi được quạt chả cơ bản trong bài hát.",              p:"Nộp video bài quạt chả 90 giây.",                       c:[],                    bpm:84},
+  {n:33, t:"Ôn 14 hợp âm",           d:"Kiểm tra trí nhớ hợp âm và tốc độ chuyển.",           r:"Tự chọn hợp âm đúng khi nhìn sheet bài đơn giản.",      p:"Checklist hợp âm: đạt / chưa đạt / cần luyện thêm.",    c:[],                    bpm:80},
+  {n:34, t:"Ôn 3 kiểu đệm",          d:"Slow Rock, Ballad, quạt chả.",                        r:"Biết chọn kiểu đệm phù hợp bài chậm hoặc vui.",         p:"Đệm cùng một vòng hợp âm bằng 3 kiểu khác nhau.",       c:[],                    bpm:78},
+  {n:35, t:"Chuẩn bị bài tốt nghiệp",d:"Chọn bài, chia đoạn, đánh dấu hợp âm.",               r:"Có bản dựng hoàn chỉnh để biểu diễn / ghi hình.",       p:"Tập full bài và ghi lại lỗi cần sửa.",                  c:[],                    bpm:76},
+  {n:36, t:"Bài tốt nghiệp",         d:"Đệm hát một bài hoàn chỉnh ở mức cơ bản.",            r:"Hoàn thành trình độ cơ bản, biết tự luyện bài mới.",    p:"Giáo viên nhận xét và gợi ý lộ trình tiếp theo.",       c:[],                    bpm:76}
+];
+
+/* Sơ đồ hợp âm: frets theo thứ tự dây 6→1 (E A D G B e), -1 = không đánh, 0 = buông.
+   fingers: ngón bấm 1..4 (0 = không có). barre: {fret, from, to} theo chỉ số dây 0..5 */
+const CHORDS = [
+  {name:"Em",    group:"Cơ bản",  frets:[0,2,2,0,0,0],    fingers:[0,2,3,0,0,0], tip:"Ngón 2 và 3 nằm ngăn 2, gảy đủ 6 dây."},
+  {name:"Am",    group:"Cơ bản",  frets:[-1,0,2,2,1,0],   fingers:[0,0,2,3,1,0], tip:"Không đánh dây 6. Ngón 1 ở dây 2 ngăn 1."},
+  {name:"C",     group:"Cơ bản",  frets:[-1,3,2,0,1,0],   fingers:[0,3,2,0,1,0], tip:"Cong ngón để dây 1 và 3 vẫn kêu buông."},
+  {name:"G",     group:"Cơ bản",  frets:[3,2,0,0,3,3],    fingers:[2,1,0,0,3,4], tip:"Dùng ngón 3-4 cho hai dây cao để chuyển sang C nhanh hơn."},
+  {name:"D",     group:"Cơ bản",  frets:[-1,-1,0,2,3,2],  fingers:[0,0,0,1,3,2], tip:"Chỉ đánh 4 dây dưới, giữ hình tam giác."},
+  {name:"Dm",    group:"Cơ bản",  frets:[-1,-1,0,2,3,1],  fingers:[0,0,0,2,3,1], tip:"Giống D nhưng dây 1 lùi về ngăn 1."},
+  {name:"A",     group:"Cơ bản",  frets:[-1,0,2,2,2,0],   fingers:[0,0,1,2,3,0], tip:"Ba ngón thẳng hàng ngăn 2, dây 1 buông."},
+  {name:"E",     group:"Cơ bản",  frets:[0,2,2,1,0,0],    fingers:[0,2,3,1,0,0], tip:"Nền của mọi hợp âm chặn dạng E."},
+  {name:"Fmaj7", group:"Cơ bản",  frets:[-1,-1,3,2,1,0],  fingers:[0,0,3,2,1,0], tip:"Bản dễ thay F cho người mới, dùng chung vòng với C."},
+  {name:"Bm dễ", group:"Cơ bản",  frets:[-1,-1,0,4,3,2],  fingers:[0,0,0,3,2,1], tip:"Bm không cần chặn, hợp cho bài G - D - Em - Bm."},
+  {name:"G7",    group:"Dominant",frets:[3,2,0,0,0,1],    fingers:[3,2,0,0,0,1], tip:"Kết câu về C rất mượt."},
+  {name:"E7",    group:"Dominant",frets:[0,2,0,1,0,0],    fingers:[0,2,0,1,0,0], tip:"Dẫn về Am, hay dùng trong bolero."},
+  {name:"A7",    group:"Dominant",frets:[-1,0,2,0,2,0],   fingers:[0,0,2,0,3,0], tip:"Dẫn về D hoặc Dm."},
+  {name:"D7",    group:"Dominant",frets:[-1,-1,0,2,1,2],  fingers:[0,0,0,2,1,3], tip:"Dẫn về G, tay giống D nhưng đổi 2 ngón."},
+  {name:"F",     group:"Chặn",    frets:[1,3,3,2,1,1],    fingers:[1,3,4,2,1,1], barre:{fret:1,from:0,to:5}, tip:"Ngón 1 chặn cả 6 dây ngăn 1, ép sát phím đồng."},
+  {name:"Bm",    group:"Chặn",    frets:[-1,2,4,4,3,2],   fingers:[0,1,3,4,2,1], barre:{fret:2,from:1,to:5}, tip:"Dạng Am dời lên ngăn 2."},
+  {name:"B",     group:"Chặn",    frets:[-1,2,4,4,4,2],   fingers:[0,1,2,3,4,1], barre:{fret:2,from:1,to:5}, tip:"Dạng A dời lên ngăn 2."},
+  {name:"Cm",    group:"Chặn",    frets:[-1,3,5,5,4,3],   fingers:[0,1,3,4,2,1], barre:{fret:3,from:1,to:5}, tip:"Dạng Am dời lên ngăn 3."},
+  {name:"Fm",    group:"Chặn",    frets:[1,3,3,1,1,1],    fingers:[1,3,4,1,1,1], barre:{fret:1,from:0,to:5}, tip:"Dạng Em chặn ngăn 1."},
+  {name:"Gm",    group:"Chặn",    frets:[3,5,5,3,3,3],    fingers:[1,3,4,1,1,1], barre:{fret:3,from:0,to:5}, tip:"Dạng Em chặn ngăn 3."}
+];
+const CHORD_BY_NAME = Object.fromEntries(CHORDS.map(c => [c.name, c]));
+
+/* Mẫu đệm: slots = số phách nhỏ trong 1 vòng, hits mô tả từng slot.
+   d = quạt xuống, u = quạt lên, b = bass (gảy dây trầm), null = nghỉ */
+const STRUM_STYLES = [
+  { id:"slowrock", name:"Slow Rock · 6/8", sub:6, per:1, defBpm:64,
+    hits:["b",null,"u","d",null,"u"],
+    note:"Đếm 1-2-3 / 4-5-6. Phách 1 gảy bass, phách 4 quạt xuống." },
+  { id:"ballad", name:"Ballad · 4/4", sub:8, per:1, defBpm:72,
+    hits:["b",null,"d","u",null,"u","d","u"],
+    note:"Mẫu kinh điển cho bài chậm: bass - xuống lên - lên xuống lên." },
+  { id:"quatcha", name:"Quạt chả · 4/4", sub:8, per:1, defBpm:88,
+    hits:["d",null,"d","u",null,"u","d","u"],
+    note:"Cổ tay thả lỏng, nhấn mạnh phách 2 và 4." },
+  { id:"bolero", name:"Bolero rải · 4/4", sub:8, per:1, defBpm:66,
+    hits:["b",null,"u","d","u",null,"d","u"],
+    note:"Rải nhẹ từng dây, hợp bài trữ tình." },
+  { id:"downs", name:"Gảy xuống · 4/4", sub:4, per:1, defBpm:60,
+    hits:["d","d","d","d"],
+    note:"Bài tập buổi 4: chỉ gảy xuống, giữ nhịp thật đều." }
+];
+
+const PROGRESSIONS = [
+  { name:"Am - C - G - Em",  chords:["Am","C","G","Em"] },
+  { name:"C - G - Am - F",   chords:["C","G","Am","Fmaj7"] },
+  { name:"C - G - D - Em",   chords:["C","G","D","Em"] },
+  { name:"G - D - Em - C",   chords:["G","D","Em","C"] },
+  { name:"Am - Dm - G - C",  chords:["Am","Dm","G","C"] },
+  { name:"C - Am - Dm - G7", chords:["C","Am","Dm","G7"] },
+  { name:"G - D - Em - Bm",  chords:["G","D","Em","Bm dễ"] },
+  { name:"A - E - D - A",    chords:["A","E","D","A"] }
+];
+
+const STRING_NAMES = ["E","A","D","G","B","e"];
+const OPEN_MIDI    = [40, 45, 50, 55, 59, 64];       // E2 A2 D3 G3 B3 E4
+const NOTE_NAMES   = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+
+/* =====================================================================
+   2. LƯU TRỮ
+   ===================================================================== */
+const KEY = "dayguitarquancafe.v1";
+const todayKey = () => new Date().toISOString().slice(0,10);
+
+const defaultState = () => ({
+  name:"", branch:"Lớp guitar đệm hát tại quán cà phê",
+  done:[],            // số buổi đã hoàn thành
+  chords:[],          // tên hợp âm đã đánh dấu thuộc
+  days:[],            // các ngày đã luyện (YYYY-MM-DD)
+  minutes:{},         // { "YYYY-MM-DD": phút }
+  drill:"",           // ngày đã hoàn thành bài luyện 10 phút
+  bpm:70, beats:4, stage:1, chordGroup:"Tất cả",
+
+  // Lớp học viên đang theo. App không có máy chủ nên phần này do học viên tự
+  // nhập; day = -1 nghĩa là chưa có lịch cố định hàng tuần.
+  cls:{ name:"", teacher:"", form:"Lớp nhóm", day:-1, time:"", total:0, usedBefore:0 },
+  log:[]              // [{ id, date, status: done|makeup|off, note }]
+});
+
+let S = load();
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return defaultState();
+    const base = defaultState();
+    const saved = JSON.parse(raw);
+    // `cls` là object lồng nên phải trộn riêng, không thì bản lưu cũ thiếu
+    // trường nào sẽ ghi đè cả cụm và render ra undefined.
+    const merged = Object.assign(base, saved);
+    merged.cls = Object.assign(defaultState().cls, saved.cls || {});
+    if(!Array.isArray(merged.log)) merged.log = [];
+    return merged;
+  }catch(e){ return defaultState(); }
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+}
+
+const $  = (sel, root) => (root || document).querySelector(sel);
+const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+
+let toastTimer = null;
+function toast(msg){
+  const el = $("#toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2000);
+}
+
+function currentLesson(){
+  for(const l of LESSONS){ if(!S.done.includes(l.n)) return l; }
+  return LESSONS[LESSONS.length - 1];
+}
+function stageOf(n){ return STAGES.find(s => n >= s.range[0] && n <= s.range[1]) || STAGES[0]; }
+
+function streak(){
+  if(!S.days.length) return 0;
+  const set = new Set(S.days);
+  let count = 0;
+  const d = new Date();
+  if(!set.has(d.toISOString().slice(0,10))) d.setDate(d.getDate() - 1);
+  for(;;){
+    const k = d.toISOString().slice(0,10);
+    if(!set.has(k)) break;
+    count++;
+    d.setDate(d.getDate() - 1);
+  }
+  return count;
+}
+function markPractice(min){
+  const k = todayKey();
+  if(!S.days.includes(k)) S.days.push(k);
+  S.minutes[k] = (S.minutes[k] || 0) + (min || 0);
+  save();
+}
+
+/* =====================================================================
+   3. ÂM THANH — Web Audio
+   ===================================================================== */
+let ctx = null, master = null;
+function audio(){
+  if(!ctx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    ctx = new AC();
+    master = ctx.createGain();
+    master.gain.value = 0.9;
+    master.connect(ctx.destination);
+  }
+  if(ctx.state === "suspended") ctx.resume();
+  return ctx;
+}
+const midiToFreq = m => 440 * Math.pow(2, (m - 69) / 12);
+
+/* Karplus-Strong: tổng hợp tiếng dây gảy, cache theo tần số */
+const pluckCache = new Map();
+function pluckBuffer(freq){
+  const key = Math.round(freq * 10);
+  if(pluckCache.has(key)) return pluckCache.get(key);
+  const c  = audio();
+  const sr = c.sampleRate;
+  const dur = 2.6;
+  const len = Math.floor(sr * dur);
+  const buf = c.createBuffer(1, len, sr);
+  const out = buf.getChannelData(0);
+  const N   = Math.max(2, Math.round(sr / freq));
+  const ring = new Float32Array(N);
+  for(let i = 0; i < N; i++) ring[i] = Math.random() * 2 - 1;
+  // làm mềm nhiễu ban đầu cho bớt chói
+  for(let k = 0; k < 3; k++){
+    for(let i = 0; i < N; i++){
+      ring[i] = (ring[i] + ring[(i + 1) % N]) * 0.5;
+    }
+  }
+  const damp = 0.995 - Math.min(0.004, freq / 200000);
+  let idx = 0;
+  for(let i = 0; i < len; i++){
+    const cur = ring[idx];
+    out[i] = cur;
+    ring[idx] = (cur + ring[(idx + 1) % N]) * 0.5 * damp;
+    idx = (idx + 1) % N;
+  }
+  // fade đuôi để không bị click
+  const fade = Math.floor(sr * 0.12);
+  for(let i = 0; i < fade; i++){
+    out[len - 1 - i] *= i / fade;
+  }
+  pluckCache.set(key, buf);
+  return buf;
+}
+
+const liveNodes = new Set();
+function playFreq(freq, when, gain){
+  const c = audio();
+  const src = c.createBufferSource();
+  src.buffer = pluckBuffer(freq);
+  const g = c.createGain();
+  g.gain.value = gain == null ? 0.32 : gain;
+  src.connect(g).connect(master);
+  src.start(when || c.currentTime);
+  liveNodes.add(src);
+  src.onended = () => liveNodes.delete(src);
+  return src;
+}
+
+/* Gảy 1 hợp âm: rải nhẹ từng dây theo hướng lên/xuống */
+function playChord(chord, opts){
+  const o = opts || {};
+  const c = audio();
+  const t0 = o.when || c.currentTime;
+  const spread = o.spread == null ? 0.028 : o.spread;
+  const gain = o.gain == null ? 0.3 : o.gain;
+  let strings = [];
+  chord.frets.forEach((f, i) => { if(f >= 0) strings.push(i); });
+  if(o.bassOnly) strings = strings.slice(0, 2);
+  if(o.trebleOnly) strings = strings.slice(-4);
+  const order = o.up ? strings.slice().reverse() : strings;
+  order.forEach((si, k) => {
+    const freq = midiToFreq(OPEN_MIDI[si] + chord.frets[si]);
+    playFreq(freq, t0 + k * spread, gain * (o.up ? 0.8 : 1));
+  });
+}
+
+function stopAllSound(){
+  liveNodes.forEach(n => { try{ n.stop(); }catch(e){} });
+  liveNodes.clear();
+  metro.stop();
+  strum.stop();
+  tuner.stop();
+}
+
+/* Tiếng click metronome */
+function click(when, accent){
+  const c = audio();
+  const osc = c.createOscillator();
+  const g = c.createGain();
+  osc.frequency.value = accent ? 1600 : 1000;
+  osc.type = "square";
+  g.gain.setValueAtTime(0.0001, when);
+  g.gain.exponentialRampToValueAtTime(accent ? 0.5 : 0.26, when + 0.002);
+  g.gain.exponentialRampToValueAtTime(0.0001, when + 0.055);
+  osc.connect(g).connect(master);
+  osc.start(when);
+  osc.stop(when + 0.08);
+}
+
+/* =====================================================================
+   4. SƠ ĐỒ HỢP ÂM (SVG)
+   ===================================================================== */
+function chordSVG(chord, size){
+  const W = size === "lg" ? 190 : 96;
+  const rows = 5, cols = 6;
+  const padX = W * 0.14, padTop = W * 0.20, padBot = W * 0.06;
+  const gw = W - padX * 2;
+  const gh = gw * 1.15;
+  const H = gh + padTop + padBot;
+  const dx = gw / (cols - 1);
+  const dy = gh / rows;
+  const played = chord.frets.filter(f => f > 0);
+  const minF = played.length ? Math.min.apply(null, played) : 1;
+  const base = minF > 4 ? minF : 1;
+  const r = dx * 0.30;
+  const ink = "#20231f", line = "#c9c2b3", muted = "#9a9487";
+  let s = '<svg viewBox="0 0 ' + W + ' ' + H.toFixed(1) + '" role="img" aria-label="Thế bấm ' + chord.name + '">';
+
+  // nut hoặc số ngăn
+  if(base === 1){
+    s += '<rect x="' + padX + '" y="' + (padTop - 3.5) + '" width="' + gw + '" height="3.5" fill="' + ink + '"/>';
+  }else{
+    s += '<text x="' + (padX - 5) + '" y="' + (padTop + dy * 0.7) + '" font-size="' + (W * 0.11) + '" text-anchor="end" fill="' + muted + '">' + base + '</text>';
+  }
+  for(let i = 0; i < rows + 1; i++){
+    const y = padTop + i * dy;
+    s += '<line x1="' + padX + '" y1="' + y + '" x2="' + (padX + gw) + '" y2="' + y + '" stroke="' + line + '" stroke-width="1"/>';
+  }
+  for(let i = 0; i < cols; i++){
+    const x = padX + i * dx;
+    s += '<line x1="' + x + '" y1="' + padTop + '" x2="' + x + '" y2="' + (padTop + gh) + '" stroke="' + line + '" stroke-width="1"/>';
+  }
+  // ký hiệu x / o phía trên
+  chord.frets.forEach((f, i) => {
+    const x = padX + i * dx;
+    const y = padTop - (base === 1 ? 8 : 6);
+    if(f === -1){
+      const a = r * 0.55;
+      s += '<path d="M' + (x - a) + ' ' + (y - a) + 'L' + (x + a) + ' ' + (y + a) + 'M' + (x + a) + ' ' + (y - a) + 'L' + (x - a) + ' ' + (y + a) + '" stroke="' + muted + '" stroke-width="1.6" stroke-linecap="round"/>';
+    }else if(f === 0){
+      s += '<circle cx="' + x + '" cy="' + y + '" r="' + (r * 0.55) + '" fill="none" stroke="' + muted + '" stroke-width="1.5"/>';
+    }
+  });
+  // ngón chặn
+  if(chord.barre && chord.barre.fret >= base){
+    const y = padTop + (chord.barre.fret - base + 0.5) * dy;
+    const x1 = padX + chord.barre.from * dx;
+    const x2 = padX + chord.barre.to * dx;
+    s += '<line x1="' + x1 + '" y1="' + y + '" x2="' + x2 + '" y2="' + y + '" stroke="' + ink + '" stroke-width="' + (r * 1.9) + '" stroke-linecap="round"/>';
+  }
+  // chấm ngón
+  chord.frets.forEach((f, i) => {
+    if(f <= 0) return;
+    const barred = chord.barre && f === chord.barre.fret && i >= chord.barre.from && i <= chord.barre.to;
+    const x = padX + i * dx;
+    const y = padTop + (f - base + 0.5) * dy;
+    if(!barred){
+      s += '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + ink + '"/>';
+    }
+    const fg = chord.fingers && chord.fingers[i];
+    if(fg && size === "lg"){
+      s += '<text x="' + x + '" y="' + (y + r * 0.42) + '" font-size="' + (r * 1.25) + '" text-anchor="middle" fill="#fffdf8" font-weight="700">' + fg + '</text>';
+    }
+  });
+  s += '</svg>';
+  return s;
+}
+
+function chordCard(chord, extraClass){
+  const learned = S.chords.includes(chord.name) ? " learned" : "";
+  return '<button class="chord-card' + learned + (extraClass ? " " + extraClass : "") +
+         '" data-chord="' + chord.name + '">' + chordSVG(chord) +
+         '<b>' + chord.name + '</b><small>' + chord.group + '</small></button>';
+}
+
+/* =====================================================================
+   5. METRONOME
+   ===================================================================== */
+const metro = {
+  on:false, beat:0, next:0, timer:null,
+  lookahead:0.12, tick:25,
+  start(){
+    if(this.on) return;
+    audio();
+    this.on = true;
+    this.beat = 0;
+    this.next = ctx.currentTime + 0.08;
+    this.timer = setInterval(() => this.schedule(), this.tick);
+    $("#metroToggle").textContent = "Dừng";
+    markPractice(0);
+    renderToday();
+  },
+  stop(){
+    if(!this.on) return;
+    this.on = false;
+    clearInterval(this.timer);
+    const btn = $("#metroToggle");
+    if(btn) btn.textContent = "Bắt đầu";
+    $$("#beatDots .beat").forEach(d => d.classList.remove("on","accent"));
+  },
+  toggle(){ this.on ? this.stop() : this.start(); },
+  schedule(){
+    const spb = 60 / S.bpm;
+    while(this.next < ctx.currentTime + this.lookahead){
+      const accent = this.beat % S.beats === 0;
+      click(this.next, accent);
+      this.flash(this.beat % S.beats, accent, this.next);
+      this.next += spb;
+      this.beat++;
+    }
+  },
+  flash(i, accent, when){
+    const delay = Math.max(0, (when - ctx.currentTime) * 1000);
+    setTimeout(() => {
+      const dots = $$("#beatDots .beat");
+      dots.forEach(d => d.classList.remove("on","accent"));
+      if(dots[i]){
+        dots[i].classList.add("on");
+        if(accent) dots[i].classList.add("accent");
+      }
+    }, delay);
+  }
+};
+
+/* =====================================================================
+   6. MÁY ĐỆM HÁT
+   ===================================================================== */
+const strum = {
+  on:false, timer:null, next:0, step:0, bpm:72,
+  styleId:"slowrock", progIdx:0,
+  style(){ return STRUM_STYLES.find(s => s.id === this.styleId) || STRUM_STYLES[0]; },
+  prog(){ return PROGRESSIONS[this.progIdx]; },
+  start(){
+    if(this.on) return;
+    audio();
+    this.on = true;
+    this.step = 0;
+    this.next = ctx.currentTime + 0.1;
+    this.timer = setInterval(() => this.schedule(), 25);
+    $("#strumToggle").textContent = "Dừng đệm";
+    markPractice(0);
+  },
+  stop(){
+    if(!this.on) return;
+    this.on = false;
+    clearInterval(this.timer);
+    const b = $("#strumToggle");
+    if(b) b.textContent = "Bắt đầu đệm";
+    $$("#strumView .strum-slot").forEach(s => s.classList.remove("on"));
+  },
+  toggle(){ this.on ? this.stop() : this.start(); },
+  schedule(){
+    const st = this.style();
+    const beatsPerBar = st.sub === 6 ? 6 : 4;
+    const subPerBeat  = st.sub / beatsPerBar;
+    const dt = (60 / this.bpm) / subPerBeat;
+    while(this.next < ctx.currentTime + 0.14){
+      const slot = this.step % st.sub;
+      const bar  = Math.floor(this.step / st.sub);
+      const names = this.prog().chords;
+      const chord = CHORD_BY_NAME[names[bar % names.length]];
+      const hit = st.hits[slot];
+      if(hit && chord){
+        if(hit === "b")      playChord(chord, { when:this.next, bassOnly:true, gain:0.34, spread:0.05 });
+        else if(hit === "d") playChord(chord, { when:this.next, gain:0.28, spread:0.022 });
+        else                 playChord(chord, { when:this.next, up:true, trebleOnly:true, gain:0.22, spread:0.018 });
+      }
+      this.paint(slot, chord, this.next);
+      this.next += dt;
+      this.step++;
+    }
+  },
+  paint(slot, chord, when){
+    const delay = Math.max(0, (when - ctx.currentTime) * 1000);
+    setTimeout(() => {
+      if(!strum.on) return;
+      $$("#strumView .strum-slot").forEach((el, i) => el.classList.toggle("on", i === slot));
+      if(chord){
+        $("#strumChord").textContent = chord.name;
+        const names = strum.prog().chords;
+        $$("#progRow .pc").forEach((el, i) => el.classList.toggle("active", names[i] === chord.name));
+      }
+    }, delay);
+  }
+};
+
+/* =====================================================================
+   7. LÊN DÂY (tuner) — tự tương quan
+   ===================================================================== */
+const tuner = {
+  on:false, stream:null, analyser:null, buf:null, raf:null,
+  async start(){
+    if(this.on) return;
+    try{
+      const c = audio();
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        audio:{ echoCancellation:false, noiseSuppression:false, autoGainControl:false }
+      });
+      const src = c.createMediaStreamSource(this.stream);
+      const hp = c.createBiquadFilter();
+      hp.type = "highpass"; hp.frequency.value = 60;
+      this.analyser = c.createAnalyser();
+      this.analyser.fftSize = 4096;
+      src.connect(hp).connect(this.analyser);
+      this.buf = new Float32Array(this.analyser.fftSize);
+      this.on = true;
+      $("#tunerToggle").textContent = "Tắt mic";
+      $("#tunerHint").textContent = "Đang nghe… gảy từng dây một, để đàn cách mic khoảng 20cm.";
+      this.loop();
+    }catch(e){
+      $("#tunerHint").textContent = "Không truy cập được micro. Hãy cho phép quyền mic hoặc mở trang bằng https / localhost.";
+    }
+  },
+  stop(){
+    if(!this.on) return;
+    this.on = false;
+    cancelAnimationFrame(this.raf);
+    if(this.stream) this.stream.getTracks().forEach(t => t.stop());
+    this.stream = null;
+    const b = $("#tunerToggle");
+    if(b) b.textContent = "Bật mic để lên dây";
+    $("#tunerNote").innerHTML = "<b>—</b><span>Bấm bật mic rồi gảy từng dây</span>";
+    $("#tunerNote").classList.remove("ok");
+    $("#tunerNeedle").style.left = "50%";
+  },
+  toggle(){ this.on ? this.stop() : this.start(); },
+  loop(){
+    if(!this.on) return;
+    this.analyser.getFloatTimeDomainData(this.buf);
+    const f = detectPitch(this.buf, ctx.sampleRate);
+    if(f > 0) this.paint(f);
+    this.raf = requestAnimationFrame(() => this.loop());
+  },
+  paint(freq){
+    const midi = 69 + 12 * Math.log2(freq / 440);
+    const near = Math.round(midi);
+    const cents = Math.round((midi - near) * 100);
+    const name = NOTE_NAMES[((near % 12) + 12) % 12];
+    const oct = Math.floor(near / 12) - 1;
+    const el = $("#tunerNote");
+    const ok = Math.abs(cents) <= 5;
+    el.innerHTML = "<b>" + name + "</b><span>" + oct + " · " +
+      (cents > 0 ? "+" : "") + cents + " cent · " + freq.toFixed(1) + " Hz</span>";
+    el.classList.toggle("ok", ok);
+    const pos = 50 + Math.max(-50, Math.min(50, cents)) * 0.9;
+    const n = $("#tunerNeedle");
+    n.style.left = pos + "%";
+    n.style.background = ok ? "#6b8f5f" : (Math.abs(cents) < 20 ? "#bd937b" : "#b3614a");
+    $$("#stringRefs button").forEach((b, i) => b.classList.toggle("hit", ok && OPEN_MIDI[i] === near));
+  }
+};
+
+/* Tự tương quan chuẩn hoá (ACF2+) */
+function detectPitch(buf, sr){
+  const n = buf.length;
+  let rms = 0;
+  for(let i = 0; i < n; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / n);
+  if(rms < 0.008) return -1;
+
+  let r1 = 0, r2 = n - 1;
+  const thr = 0.2;
+  for(let i = 0; i < n / 2; i++){ if(Math.abs(buf[i]) < thr){ r1 = i; break; } }
+  for(let i = 1; i < n / 2; i++){ if(Math.abs(buf[n - i]) < thr){ r2 = n - i; break; } }
+  const b = buf.slice(r1, r2);
+  const m = b.length;
+  if(m < 512) return -1;
+
+  const c = new Float32Array(m).fill(0);
+  for(let lag = 0; lag < m; lag++){
+    let sum = 0;
+    for(let i = 0; i < m - lag; i++) sum += b[i] * b[i + lag];
+    c[lag] = sum;
+  }
+  let d = 0;
+  while(d < m - 1 && c[d] > c[d + 1]) d++;
+  let max = -1, pos = -1;
+  for(let i = d; i < m; i++){
+    if(c[i] > max){ max = c[i]; pos = i; }
+  }
+  if(pos <= 0) return -1;
+  const x1 = c[pos - 1], x2 = c[pos], x3 = c[pos + 1] || 0;
+  const a = (x1 + x3 - 2 * x2) / 2;
+  const bq = (x3 - x1) / 2;
+  const shift = a ? -bq / (2 * a) : 0;
+  const freq = sr / (pos + shift);
+  return (freq > 55 && freq < 1400) ? freq : -1;
+}
+
+/* =====================================================================
+   8. GIAO DIỆN
+   ===================================================================== */
+function renderToday(){
+  const l = currentLesson();
+  const st = stageOf(l.n);
+  const doneCount = S.done.length;
+  $("#todayTitle").textContent = "Bài " + String(l.n).padStart(2,"0") + " · " + l.t;
+  $("#todayGoal").textContent = l.d;
+  $("#todayBar").style.width = Math.round(doneCount / LESSONS.length * 100) + "%";
+  $("#todayCount").textContent = doneCount + " / " + LESSONS.length + " buổi";
+  $("#todayStage").textContent = "Chặng " + st.id + " · " + st.tag;
+  $("#drillText").textContent = l.p;
+
+  const doneToday = S.drill === todayKey();
+  const pill = $("#drillPill");
+  pill.textContent = doneToday ? "Đã xong" : "Chưa xong";
+  pill.className = "pill" + (doneToday ? " done" : "");
+
+  $("#stStreak").textContent  = streak();
+  $("#stMinutes").textContent = S.minutes[todayKey()] || 0;
+  $("#stChords").textContent  = S.chords.length;
+
+  const names = l.c.length ? l.c : ["Em","Am","C","G"];
+  $("#todayChords").innerHTML = names
+    .map(n => CHORD_BY_NAME[n]).filter(Boolean)
+    .map(c => chordCard(c)).join("");
+
+  $("#hello").textContent = S.name ? "Chào " + S.name : "Guitar Cà Phê";
+  $("#subhello").textContent = S.branch;
+
+  renderClassCard();
+}
+
+function renderPath(){
+  const doneCount = S.done.length;
+  $("#pathPill").textContent = doneCount + " / " + LESSONS.length;
+  $("#pathBar").style.width = Math.round(doneCount / LESSONS.length * 100) + "%";
+
+  $("#stageChips").innerHTML = ['<button class="chip' + (S.stage === 0 ? " active" : "") + '" data-stage="0">Tất cả</button>']
+    .concat(STAGES.map(s => '<button class="chip' + (S.stage === s.id ? " active" : "") +
+      '" data-stage="' + s.id + '">Chặng ' + s.id + ' · ' + s.tag + '</button>')).join("");
+
+  const cur = currentLesson().n;
+  const shown = STAGES.filter(s => S.stage === 0 || s.id === S.stage);
+  $("#lessonList").innerHTML = shown.map(s => {
+    const rows = LESSONS.filter(l => l.n >= s.range[0] && l.n <= s.range[1]).map(l => {
+      const done = S.done.includes(l.n);
+      const cls = "lesson" + (done ? " is-done" : "") + (l.n === cur ? " is-current" : "");
+      const badge = done ? '<span class="pill done">Xong</span>'
+                  : l.n === cur ? '<span class="pill now">Đang học</span>'
+                  : '<span class="pill">Chưa học</span>';
+      return '<button class="' + cls + '" data-lesson="' + l.n + '">' +
+             '<div class="no">' + l.n + '</div>' +
+             '<div class="txt"><b>' + l.t + '</b><span>' + l.d + '</span></div>' + badge + '</button>';
+    }).join("");
+    return '<div class="stage-head"><h3>Chặng ' + s.id + ': ' + s.name + '</h3>' +
+           '<span>Buổi ' + s.range[0] + '-' + s.range[1] + '</span></div>' +
+           '<p class="muted" style="margin:0 2px 9px;">' + s.note + '</p>' + rows;
+  }).join("");
+}
+
+function renderChords(){
+  const groups = ["Tất cả"].concat(Array.from(new Set(CHORDS.map(c => c.group))));
+  $("#chordChips").innerHTML = groups.map(g =>
+    '<button class="chip' + (S.chordGroup === g ? " active" : "") + '" data-group="' + g + '">' + g + '</button>'
+  ).join("");
+  const list = CHORDS.filter(c => S.chordGroup === "Tất cả" || c.group === S.chordGroup);
+  $("#chordGrid").innerHTML = list.map(c => chordCard(c)).join("");
+  $("#chordPill").textContent = S.chords.length + " thuộc";
+}
+
+function renderMe(){
+  $("#nameInput").value = S.name;
+  $("#branchInput").value = S.branch;
+  $("#meLessons").textContent = S.done.length;
+  $("#meChords").textContent = S.chords.length;
+  $("#meDays").textContent = S.days.length;
+  const st = stageOf(currentLesson().n);
+  $("#meStage").textContent = "Đang ở chặng " + st.id + " — " + st.name.toLowerCase() + ".";
+}
+
+function renderBeats(){
+  $("#beatDots").innerHTML = Array.from({length:S.beats}, () => '<div class="beat"></div>').join("");
+}
+function bpmName(v){
+  if(v < 60) return "Rất chậm - tập thế bấm";
+  if(v < 76) return "Chậm - tập chuyển hợp âm";
+  if(v < 100) return "Vừa - đệm hát cơ bản";
+  if(v < 130) return "Nhanh - quạt chả sôi động";
+  return "Rất nhanh - chỉ để thử thách";
+}
+function renderBpm(){
+  $("#bpmVal").textContent = S.bpm;
+  $("#bpmName").textContent = bpmName(S.bpm);
+  $("#bpmRange").value = S.bpm;
+}
+function setBpm(v){
+  S.bpm = Math.max(40, Math.min(200, Math.round(v)));
+  save(); renderBpm();
+}
+
+function renderStrum(){
+  const st = strum.style();
+  $("#strumStyleName").textContent = st.name;
+  $("#strumView").innerHTML = st.hits.map(h => {
+    const label = h === "d" ? "↓" : h === "u" ? "↑" : h === "b" ? "●" : "·";
+    return '<div class="strum-slot' + (h ? "" : " empty") + '">' + label + '</div>';
+  }).join("");
+  $("#progRow").innerHTML = strum.prog().chords
+    .map(c => '<div class="pc">' + c + '</div>').join("");
+  $("#strumChord").textContent = strum.prog().chords[0];
+  $("#strumBpmLabel").textContent = strum.bpm + " bpm · " + st.note;
+  $("#strumBpm").value = strum.bpm;
+}
+
+function renderStrings(){
+  $("#stringRefs").innerHTML = OPEN_MIDI.map((m, i) =>
+    '<button data-str="' + i + '">' + STRING_NAMES[i] +
+    '<small>dây ' + (6 - i) + '</small></button>').join("");
+}
+
+/* ---------- màn hình chi tiết buổi học ---------- */
+
+/* Kiểu đệm gắn với từng chặng, để nút "máy đệm" vào thẳng điệu đang học. */
+const STAGE_STRUM = { 1:"downs", 3:"slowrock", 4:"ballad", 5:"quatcha" };
+
+let lessonBackTo = "path";
+
+function openLesson(n, backTo){
+  const l = LESSONS.find(x => x.n === n);
+  if(!l) return;
+  lessonBackTo = backTo || "path";
+
+  const st = stageOf(n);
+  const done = S.done.includes(n);
+  const prev = LESSONS.find(x => x.n === n - 1);
+  const next = LESSONS.find(x => x.n === n + 1);
+  const strum = STRUM_STYLES.find(s => s.id === STAGE_STRUM[st.id]);
+
+  const chordHtml = l.c.length
+    ? l.c.map(name => CHORD_BY_NAME[name]).filter(Boolean).map(c =>
+        '<div class="chord-row">' +
+          '<button class="chord-card" data-chord="' + c.name + '" style="border:0;padding:0;background:none">' +
+            chordSVG(c, "lg") + '</button>' +
+          '<div class="info"><b>' + c.name + '</b>' +
+            '<div class="notes">Dây 6 → 1: ' + chordNotes(c) + '</div>' +
+            '<div class="tip">' + c.tip + '</div>' +
+          '</div>' +
+        '</div>').join("")
+    : '<p class="muted">Buổi này tập trung vào kỹ thuật, chưa thêm hợp âm mới. ' +
+      'Tranh thủ ôn lại ở thư viện hợp âm.</p>';
+
+  $("#lessonDetail").innerHTML =
+    '<div class="hero">' +
+      '<div class="eyebrow">Buổi ' + String(n).padStart(2,"0") + ' / 36 · Chặng ' + st.id + ' · ' + st.tag + '</div>' +
+      '<h2>' + l.t + '</h2>' +
+      '<p>' + l.d + '</p>' +
+      (done ? '<p class="done-flag">✓ Bạn đã hoàn thành buổi này</p>' : '') +
+    '</div>' +
+
+    '<div class="card"><div class="card-head"><h3>Học xong buổi này bạn sẽ</h3></div>' +
+      '<p>' + l.r + '</p></div>' +
+
+    '<div class="card"><div class="card-head"><h3>Bài luyện ở nhà</h3></div>' +
+      '<p style="margin-bottom:11px;">' + l.p + '</p>' +
+      '<div class="btn-row">' +
+        '<button class="btn" data-act="metro" data-bpm="' + l.bpm + '">Metronome ' + l.bpm + '</button>' +
+        (strum
+          ? '<button class="btn alt" data-act="strum" data-style="' + strum.id + '">Máy đệm ' +
+            strum.name.split(" · ")[0] + '</button>'
+          : '') +
+      '</div></div>' +
+
+    '<div class="card"><div class="card-head"><h3>Hợp âm trong buổi</h3></div>' + chordHtml + '</div>' +
+
+    '<button class="btn' + (done ? " warn" : "") + '" data-act="toggle-done" data-n="' + n + '">' +
+      (done ? "Bỏ đánh dấu hoàn thành" : "✓ Đánh dấu đã học xong") + '</button>' +
+
+    '<div class="pager">' +
+      (prev
+        ? '<a data-lesson-nav="' + prev.n + '"><small>← Buổi ' + String(prev.n).padStart(2,"0") + '</small>' +
+          '<b>' + prev.t + '</b></a>'
+        : '<span class="spacer"></span>') +
+      (next
+        ? '<a class="next" data-lesson-nav="' + next.n + '"><small>Buổi ' + String(next.n).padStart(2,"0") + ' →</small>' +
+          '<b>' + next.t + '</b></a>'
+        : '<span class="spacer"></span>') +
+    '</div>';
+
+  $("#lessonBack").textContent = lessonBackTo === "today" ? "← Hôm nay" : "← Lộ trình 36 buổi";
+  show("lesson");
+}
+
+function chordNotes(c){
+  return c.frets.map((f, i) => f < 0 ? "x" : NOTE_NAMES[(OPEN_MIDI[i] + f) % 12]).join(" · ");
+}
+
+function closeSheet(){ $("#sheetWrap").classList.remove("open"); }
+
+/* ---------- lớp học ---------- */
+const DAY_LABELS = ["Chủ nhật","Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7"];
+const LOG_LABELS = { done:"Đã học", makeup:"Học bù", off:"Nghỉ" };
+
+/** Ngày gần nhất sắp tới rơi vào thứ `day` (0=CN..6=T7). Hôm nay tính là hôm nay. */
+function nextOccurrence(day){
+  if(day < 0 || day > 6) return null;
+  const d = new Date();
+  d.setDate(d.getDate() + ((day - d.getDay() + 7) % 7));
+  return d;
+}
+function fmtDate(d){
+  const p = n => String(n).padStart(2,"0");
+  return p(d.getDate()) + "/" + p(d.getMonth() + 1);
+}
+
+/** Số buổi đã học = số buổi trước khi dùng app + các buổi ghi là đã học/học bù. */
+function sessionsUsed(){
+  const logged = S.log.filter(x => x.status !== "off").length;
+  return Number(S.cls.usedBefore || 0) + logged;
+}
+
+function classSummary(){
+  const c = S.cls;
+  const bits = [];
+  if(c.teacher) bits.push("GV " + c.teacher);
+  if(c.form) bits.push(c.form);
+  if(c.day >= 0) bits.push(DAY_LABELS[c.day] + (c.time ? " " + c.time : ""));
+  return bits.join(" · ");
+}
+
+function renderClassCard(){
+  const c = S.cls;
+  const total = Number(c.total || 0);
+  const used = sessionsUsed();
+
+  $("#classCardName").textContent = c.name || "Lớp học của tôi";
+  $("#classCardMeta").textContent =
+    classSummary() || "Bấm để thêm thông tin lớp bạn đang học.";
+
+  const nd = nextOccurrence(c.day);
+  const pill = $("#classCardNext");
+  pill.textContent = nd ? "Buổi tới " + fmtDate(nd) : "Chưa có lịch";
+  pill.className = "pill" + (nd ? " now" : "");
+
+  $("#classCardBar").style.width = total ? Math.min(100, Math.round(used / total * 100)) + "%" : "0%";
+  $("#classCardPkg").textContent = total
+    ? "Đã học " + used + " / " + total + " buổi · còn " + Math.max(0, total - used)
+    : "Chưa có gói buổi";
+}
+
+function renderClassView(){
+  const c = S.cls;
+  const total = Number(c.total || 0);
+  const used = sessionsUsed();
+  const remaining = Math.max(0, total - used);
+
+  $("#clsName").textContent = c.name || "Chưa đặt tên lớp";
+  $("#clsMeta").textContent =
+    classSummary() || "Thêm thông tin lớp để app nhắc bạn buổi kế tiếp.";
+
+  const nd = nextOccurrence(c.day);
+  const nextEl = $("#clsNext");
+  nextEl.hidden = !nd;
+  if(nd) nextEl.textContent = "Buổi tới: " + DAY_LABELS[c.day] + " ngày " + fmtDate(nd) + (c.time ? " lúc " + c.time : "");
+
+  const pill = $("#clsPkgPill");
+  pill.textContent = total ? "Còn " + remaining + " buổi" : "Chưa có gói";
+  pill.className = "pill" + (total ? (remaining <= 3 ? " now" : " done") : "");
+  $("#clsPkgBar").style.width = total ? Math.min(100, Math.round(used / total * 100)) + "%" : "0%";
+  $("#clsPkgText").textContent = total
+    ? "Đã học " + used + " / " + total + " buổi" +
+      (remaining <= 3 && remaining > 0 ? " — sắp hết gói, nhớ hỏi trung tâm gia hạn." : "")
+    : "Nhập tổng số buổi ở phần thông tin bên dưới.";
+
+  const logs = S.log.slice().sort((a, b) => b.date.localeCompare(a.date));
+  $("#clsLogCount").textContent = logs.length + " buổi";
+  $("#clsLog").innerHTML = logs.length
+    ? logs.map(x =>
+        '<div class="log-row">' +
+          '<div class="when">' + x.date.slice(8,10) + "/" + x.date.slice(5,7) + "/" + x.date.slice(2,4) + '</div>' +
+          '<div class="what">' + (x.note ? escapeHtml(x.note) : '<span class="muted">Không ghi nội dung</span>') +
+            '<div><span class="pill' + (x.status === "off" ? "" : " done") + '">' + LOG_LABELS[x.status] + '</span></div>' +
+          '</div>' +
+          '<button class="del" data-del-log="' + x.id + '" aria-label="Xoá buổi này">×</button>' +
+        '</div>').join("")
+    : '<p class="muted">Chưa ghi buổi nào. Sau mỗi buổi học, ghi lại một dòng để nhớ mình đã tập tới đâu.</p>';
+
+  $("#clsInName").value = c.name;
+  $("#clsInTeacher").value = c.teacher;
+  $("#clsInForm").value = c.form;
+  $("#clsInDay").value = String(c.day);
+  $("#clsInTime").value = c.time;
+  $("#clsInTotal").value = total || "";
+  $("#clsInUsed").value = Number(c.usedBefore || 0) || "";
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"]/g, ch =>
+    ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" })[ch]);
+}
+
+/* ---------- điều hướng ---------- */
+function show(view){
+  $$(".view").forEach(v => v.classList.toggle("active", v.id === "view-" + view));
+  // Hai màn chi tiết không có tab riêng: sáng tab gần nhất về mặt ngữ nghĩa.
+  const tabFor = view === "lesson" ? lessonBackTo : view === "class" ? "today" : view;
+  $$(".tab").forEach(t => t.classList.toggle("active", t.dataset.view === tabFor));
+  if(view === "today")   renderToday();
+  if(view === "path")    renderPath();
+  if(view === "chords")  renderChords();
+  if(view === "me")      renderMe();
+  if(view === "class")   renderClassView();
+  window.scrollTo({ top:0, behavior:"instant" in document.documentElement.style ? "instant" : "auto" });
+}
+
+/* =====================================================================
+   9. SỰ KIỆN
+   ===================================================================== */
+$("#tabbar").addEventListener("click", e => {
+  const t = e.target.closest(".tab");
+  if(t) show(t.dataset.view);
+});
+
+$("#btnPanic").addEventListener("click", () => { stopAllSound(); toast("Đã tắt mọi âm thanh"); });
+
+/* chạm hợp âm ở bất kỳ đâu: nghe tiếng + mở chi tiết khi nhấn giữ */
+let pressTimer = null, longPressed = false;
+document.addEventListener("pointerdown", e => {
+  const card = e.target.closest(".chord-card");
+  if(!card) return;
+  longPressed = false;
+  pressTimer = setTimeout(() => { longPressed = true; openChordDetail(card.dataset.chord); }, 480);
+});
+document.addEventListener("pointerup", () => clearTimeout(pressTimer));
+document.addEventListener("pointercancel", () => clearTimeout(pressTimer));
+
+document.addEventListener("click", e => {
+  const card = e.target.closest(".chord-card");
+  if(card){
+    if(longPressed){ longPressed = false; return; }
+    const c = CHORD_BY_NAME[card.dataset.chord];
+    if(c){ playChord(c, { gain:0.32 }); markPractice(0); }
+    return;
+  }
+  const actBtn = e.target.closest("#view-lesson [data-act]");
+  if(actBtn){ lessonAct(actBtn); return; }
+
+  const navBtn = e.target.closest("[data-lesson-nav]");
+  if(navBtn){ openLesson(Number(navBtn.dataset.lessonNav), lessonBackTo); return; }
+
+  const back = e.target.closest(".backbar");
+  if(back){ show(back.id === "lessonBack" ? lessonBackTo : back.dataset.back); return; }
+
+  const lessonBtn = e.target.closest("[data-lesson]");
+  if(lessonBtn){ openLesson(Number(lessonBtn.dataset.lesson), "path"); return; }
+
+  const delLog = e.target.closest("[data-del-log]");
+  if(delLog){
+    S.log = S.log.filter(x => String(x.id) !== delLog.dataset.delLog);
+    save(); renderClassView(); renderToday();
+    toast("Đã xoá buổi học");
+    return;
+  }
+
+  const chip = e.target.closest("[data-stage]");
+  if(chip){ S.stage = Number(chip.dataset.stage); save(); renderPath(); return; }
+
+  const gchip = e.target.closest("[data-group]");
+  if(gchip){ S.chordGroup = gchip.dataset.group; save(); renderChords(); return; }
+
+  const strBtn = e.target.closest("[data-str]");
+  if(strBtn){
+    const i = Number(strBtn.dataset.str);
+    playFreq(midiToFreq(OPEN_MIDI[i]), 0, 0.4);
+    return;
+  }
+});
+
+/* nút trong màn chi tiết buổi học */
+function lessonAct(btn){
+  const act = btn.dataset.act;
+
+  if(act === "metro"){
+    setBpm(Number(btn.dataset.bpm));
+    show("practice"); selectTool("metro");
+    metro.stop(); metro.start();
+    return;
+  }
+
+  if(act === "strum"){
+    strum.stop();
+    strum.styleId = btn.dataset.style;
+    strum.bpm = strum.style().defBpm;
+    show("practice"); selectTool("strum");
+    renderStrum();
+    return;
+  }
+
+  if(act === "toggle-done"){
+    const n = Number(btn.dataset.n);
+    const i = S.done.indexOf(n);
+    if(i >= 0){
+      S.done.splice(i, 1);
+      save(); renderToday(); renderPath();
+      openLesson(n, lessonBackTo);          // vẽ lại để nút đổi trạng thái
+      toast("Đã bỏ đánh dấu buổi " + n);
+    }else{
+      S.done.push(n);
+      const l = LESSONS.find(x => x.n === n);
+      if(l) l.c.forEach(c => { if(CHORD_BY_NAME[c] && !S.chords.includes(c)) S.chords.push(c); });
+      markPractice(30);
+      save(); renderToday(); renderPath();
+      // Học xong thì đi tiếp buổi sau cho liền mạch; hết bài thì về lộ trình.
+      const next = LESSONS.find(x => x.n === n + 1);
+      if(next) openLesson(next.n, lessonBackTo); else show("path");
+      toast("Hoàn thành buổi " + n + " 🎸");
+    }
+  }
+}
+
+/* thao tác trong sheet (giờ chỉ còn chi tiết hợp âm) */
+$("#sheetWrap").addEventListener("click", e => {
+  if(e.target.id === "sheetWrap"){ closeSheet(); return; }
+  const btn = e.target.closest("[data-act]");
+  if(!btn) return;
+  const act = btn.dataset.act;
+  if(act === "close") closeSheet();
+  if(act === "learn"){
+    const name = btn.dataset.name;
+    const i = S.chords.indexOf(name);
+    if(i >= 0) S.chords.splice(i, 1); else S.chords.push(name);
+    save(); closeSheet(); renderChords(); renderToday();
+    toast(i >= 0 ? "Bỏ khỏi danh sách thuộc" : "Đã đánh dấu thuộc " + name);
+  }
+});
+
+function openChordDetail(name){
+  const c = CHORD_BY_NAME[name];
+  if(!c) return;
+  const learned = S.chords.includes(name);
+  const notes = c.frets.map((f, i) => f < 0 ? "x" : NOTE_NAMES[(OPEN_MIDI[i] + f) % 12]).join(" · ");
+  $("#sheet").innerHTML =
+    '<div class="grab"></div>' +
+    '<div class="eyebrow">Hợp âm ' + c.group.toLowerCase() + '</div>' +
+    '<h2>' + c.name + '</h2>' +
+    '<div style="max-width:210px; margin:8px auto 4px;">' + chordSVG(c, "lg") + '</div>' +
+    '<p class="muted" style="text-align:center; margin-bottom:10px;">Dây 6 → 1: ' + notes + '</p>' +
+    '<div class="kv"><b>Mẹo bấm</b><span>' + c.tip + '</span></div>' +
+    '<div class="btn-row" style="margin-top:14px;">' +
+      '<button class="btn alt chord-card" data-chord="' + c.name + '" style="border-radius:11px;padding:11px">Nghe lại</button>' +
+      '<button class="btn' + (learned ? " warn" : "") + '" data-act="learn" data-name="' + c.name + '">' +
+        (learned ? "Bỏ đánh dấu thuộc" : "Đánh dấu đã thuộc") + '</button>' +
+    '</div>' +
+    '<button class="btn alt" style="margin-top:8px;" data-act="close">Đóng</button>';
+  $("#sheetWrap").classList.add("open");
+}
+
+/* lớp học */
+$("#classCard").addEventListener("click", () => show("class"));
+
+$("#btnAddLog").addEventListener("click", () => {
+  const f = $("#logForm");
+  f.hidden = false;
+  $("#logDate").value = todayKey();
+  $("#logNote").value = "";
+  $("#logStatus").value = "done";
+  f.scrollIntoView({ behavior:"smooth", block:"center" });
+});
+$("#btnCancelLog").addEventListener("click", () => { $("#logForm").hidden = true; });
+
+$("#btnSaveLog").addEventListener("click", () => {
+  const date = $("#logDate").value;
+  if(!date){ toast("Chọn ngày học đã nhé"); return; }
+  S.log.push({
+    id: Date.now(),
+    date,
+    status: $("#logStatus").value,
+    note: $("#logNote").value.trim()
+  });
+  save();
+  $("#logForm").hidden = true;
+  renderClassView(); renderToday();
+  toast("Đã ghi buổi học");
+});
+
+$("#btnSaveClass").addEventListener("click", () => {
+  const total = Number($("#clsInTotal").value);
+  const usedBefore = Number($("#clsInUsed").value);
+  S.cls = {
+    name: $("#clsInName").value.trim(),
+    teacher: $("#clsInTeacher").value.trim(),
+    form: $("#clsInForm").value,
+    day: Number($("#clsInDay").value),
+    time: $("#clsInTime").value.trim(),
+    total: Number.isFinite(total) ? Math.max(0, Math.min(200, total)) : 0,
+    usedBefore: Number.isFinite(usedBefore) ? Math.max(0, Math.min(200, usedBefore)) : 0
+  };
+  save(); renderClassView(); renderToday();
+  toast("Đã lưu thông tin lớp");
+});
+
+/* hôm nay */
+$("#btnOpenToday").addEventListener("click", () => openLesson(currentLesson().n, "today"));
+$("#btnDrillMetro").addEventListener("click", () => {
+  setBpm(currentLesson().bpm);
+  show("practice"); selectTool("metro");
+  metro.stop(); metro.start();
+});
+$("#btnDrillDone").addEventListener("click", () => {
+  S.drill = todayKey();
+  markPractice(10);
+  save(); renderToday();
+  toast("Ghi nhận 10 phút luyện tập hôm nay");
+});
+
+/* metronome */
+$("#metroToggle").addEventListener("click", () => metro.toggle());
+$("#bpmRange").addEventListener("input", e => setBpm(Number(e.target.value)));
+$("#bpmUp").addEventListener("click", () => setBpm(S.bpm + 1));
+$("#bpmDown").addEventListener("click", () => setBpm(S.bpm - 1));
+$("#metroBeats").addEventListener("change", e => {
+  S.beats = Number(e.target.value); save(); renderBeats();
+});
+let taps = [];
+$("#btnTap").addEventListener("click", () => {
+  const now = performance.now();
+  taps = taps.filter(t => now - t < 2500);
+  taps.push(now);
+  if(taps.length >= 2){
+    let sum = 0;
+    for(let i = 1; i < taps.length; i++) sum += taps[i] - taps[i - 1];
+    setBpm(60000 / (sum / (taps.length - 1)));
+  }
+});
+
+/* tuner */
+$("#tunerToggle").addEventListener("click", () => tuner.toggle());
+
+/* đệm hát */
+$("#strumToggle").addEventListener("click", () => strum.toggle());
+$("#strumStyle").addEventListener("change", e => {
+  strum.styleId = e.target.value;
+  strum.bpm = strum.style().defBpm;
+  const was = strum.on; strum.stop();
+  renderStrum();
+  if(was) strum.start();
+});
+$("#strumProg").addEventListener("change", e => {
+  strum.progIdx = Number(e.target.value);
+  renderStrum();
+});
+$("#strumBpm").addEventListener("input", e => {
+  strum.bpm = Number(e.target.value);
+  $("#strumBpmLabel").textContent = strum.bpm + " bpm · " + strum.style().note;
+});
+
+/* tool tabs */
+function selectTool(id){
+  $$(".tool-tabs button").forEach(b => b.classList.toggle("active", b.dataset.tool === id));
+  $$(".tool").forEach(t => t.classList.toggle("active", t.id === "tool-" + id));
+  if(id !== "tuner") tuner.stop();
+  if(id !== "strum") strum.stop();
+  if(id !== "metro") metro.stop();
+}
+$$(".tool-tabs button").forEach(b => b.addEventListener("click", () => selectTool(b.dataset.tool)));
+
+/* hồ sơ */
+$("#btnSaveProfile").addEventListener("click", () => {
+  S.name = $("#nameInput").value.trim();
+  S.branch = $("#branchInput").value;
+  save(); renderToday(); toast("Đã lưu thông tin");
+});
+$("#btnExport").addEventListener("click", async () => {
+  const text = JSON.stringify(S, null, 2);
+  try{
+    await navigator.clipboard.writeText(text);
+    toast("Đã copy tiến độ vào clipboard");
+  }catch(e){
+    window.prompt("Copy đoạn dưới để lưu lại tiến độ:", text);
+  }
+});
+$("#btnReset").addEventListener("click", () => {
+  if(!window.confirm("Xoá toàn bộ tiến độ học trên máy này?")) return;
+  S = defaultState();
+  save();
+  renderToday(); renderPath(); renderChords(); renderMe(); renderBpm(); renderBeats();
+  toast("Đã xoá tiến độ");
+});
+
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape") closeSheet();
+  if(e.key === " " && $("#view-practice").classList.contains("active")){
+    e.preventDefault();
+    if($("#tool-metro").classList.contains("active")) metro.toggle();
+    else if($("#tool-strum").classList.contains("active")) strum.toggle();
+  }
+});
+document.addEventListener("visibilitychange", () => { if(document.hidden) stopAllSound(); });
+
+/* =====================================================================
+   10. KHỞI ĐỘNG
+   ===================================================================== */
+$("#strumStyle").innerHTML = STRUM_STYLES.map(s => '<option value="' + s.id + '">' + s.name + '</option>').join("");
+$("#strumProg").innerHTML  = PROGRESSIONS.map((p, i) => '<option value="' + i + '">' + p.name + '</option>').join("");
+$("#metroBeats").value = String(S.beats);
+strum.bpm = strum.style().defBpm;
+
+renderBpm();
+renderBeats();
+renderStrings();
+renderStrum();
+renderToday();
+renderPath();
+renderChords();
+renderMe();
+</script>
+</body>
+</html>
