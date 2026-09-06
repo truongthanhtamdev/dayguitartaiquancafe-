@@ -658,6 +658,10 @@ const LEAD_ENDPOINT = "";
 const CONTACT_PHONE = "0965817021";
 const CONTACT_ZALO  = "0965817021";
 
+/* Tên fanpage trong link facebook.com/<tên này>. Dùng cho nút nhắn Messenger
+   để khách hỏi tư vấn và đặt lịch học. Để trống thì ẩn nút. */
+const FANPAGE = "dayguitartaiquancafe";
+
 /* Chi nhánh đang mở. Thêm chi nhánh mới thì thêm một dòng vào đây. */
 const BRANCHES = [
   { name:"Chi nhánh Tân Phú", address:"Số 10 Đô Đốc Thủ, Tân Phú, TP.HCM", open:true }
@@ -1360,18 +1364,32 @@ function prettyPhone(p){
   return p.replace(/^(\d{4})(\d{3})(\d{3})$/, "$1 $2 $3");
 }
 
-/** Hai nút gọi và nhắn Zalo. Trả chuỗi rỗng nếu chưa cấu hình số. */
+/** Nút nhắn Messenger fanpage. Rỗng nếu chưa cấu hình FANPAGE. */
+function messengerButton(){
+  if(!FANPAGE) return "";
+  return '<a class="btn" href="https://m.me/' + FANPAGE + '" target="_blank" rel="noopener" ' +
+         'style="text-decoration:none; background:#0866ff; border-color:#0866ff;">' +
+         'Nhắn fanpage tư vấn &amp; đặt lịch</a>';
+}
+
+/** Các nút liên hệ: fanpage một hàng riêng, rồi gọi và Zalo chia đôi bên dưới —
+    ba nút cùng một hàng thì chữ bị bóp trên màn hình điện thoại. */
 function contactButtons(){
-  const parts = [];
+  const hang2 = [];
   if(CONTACT_PHONE){
-    parts.push('<a class="btn" href="tel:' + CONTACT_PHONE + '" style="text-decoration:none;">' +
+    hang2.push('<a class="btn alt" href="tel:' + CONTACT_PHONE + '" style="text-decoration:none;">' +
       'Gọi ' + prettyPhone(CONTACT_PHONE) + '</a>');
   }
   if(CONTACT_ZALO){
-    parts.push('<a class="btn alt" href="https://zalo.me/' + CONTACT_ZALO +
+    hang2.push('<a class="btn alt" href="https://zalo.me/' + CONTACT_ZALO +
       '" target="_blank" rel="noopener" style="text-decoration:none;">Nhắn Zalo</a>');
   }
-  return parts.length ? '<div class="btn-row">' + parts.join("") + '</div>' : "";
+
+  let html = messengerButton();
+  if(hang2.length){
+    html += '<div class="btn-row" style="margin-top:8px;">' + hang2.join("") + '</div>';
+  }
+  return html;
 }
 
 function renderMe(){
@@ -1529,8 +1547,14 @@ function openLesson(n, backTo){
 
     '<button class="btn' + (done ? " warn" : "") + '" data-act="toggle-done" data-n="' + n + '">' +
       (done ? "Bỏ đánh dấu hoàn thành" : "✓ Đánh dấu đã học xong") + '</button>' +
-    (l.url ? '<a class="btn alt" href="' + l.url + '" target="_blank" rel="noopener" ' +
-      'style="margin-top:8px; text-decoration:none;">Xem bài trên guitardemhat.com ↗</a>' : '') +
+
+    // Học viên đang học dở là lúc dễ hỏi nhất, nên để lối nhắn fanpage ngay đây.
+    (FANPAGE
+      ? '<div class="card" style="margin-top:12px;">' +
+        '<div class="card-head"><h3>Cần người kèm trực tiếp?</h3></div>' +
+        '<p class="muted" style="margin-bottom:11px;">Nhắn fanpage để được tư vấn ' +
+        'lộ trình và đặt lịch học tại quán.</p>' + messengerButton() + '</div>'
+      : '') +
 
     '<div class="pager">' +
       (prev
