@@ -606,7 +606,7 @@
         <div class="stat"><b id="meChords">0</b><span>hợp âm</span></div>
         <div class="stat"><b id="meDays">0</b><span>ngày luyện</span></div>
       </div>
-      <p class="muted" style="margin-top:10px;" id="meStage">Đang ở chặng 1 — làm quen đàn và nhịp.</p>
+      <p class="muted" style="margin-top:10px;" id="meStage">Đang ở chương 1 — các bước chuẩn bị.</p>
     </div>
     <div class="card">
       <div class="card-head"><h3>Dữ liệu</h3></div>
@@ -1288,7 +1288,7 @@ function renderToday(){
   $("#todayGoal").textContent = l.d;
   $("#todayBar").style.width = Math.round(doneCount / LESSONS.length * 100) + "%";
   $("#todayCount").textContent = doneCount + " / " + LESSONS.length + " bài";
-  $("#todayStage").textContent = "Chặng " + st.id + " · " + st.tag;
+  $("#todayStage").textContent = "Chương " + st.id + " · " + st.tag;
   $("#drillText").textContent = l.p;
 
   const doneToday = S.drill === todayKey();
@@ -1318,7 +1318,7 @@ function renderPath(){
 
   $("#stageChips").innerHTML = ['<button class="chip' + (S.stage === 0 ? " active" : "") + '" data-stage="0">Tất cả</button>']
     .concat(STAGES.map(s => '<button class="chip' + (S.stage === s.id ? " active" : "") +
-      '" data-stage="' + s.id + '">Chặng ' + s.id + ' · ' + s.tag + '</button>')).join("");
+      '" data-stage="' + s.id + '">Chương ' + s.id + ' · ' + s.tag + '</button>')).join("");
 
   const cur = currentLesson().n;
   const shown = STAGES.filter(s => S.stage === 0 || s.id === S.stage);
@@ -1333,7 +1333,7 @@ function renderPath(){
              '<div class="no">' + l.n + '</div>' +
              '<div class="txt"><b>' + l.t + '</b><span>' + l.d + '</span></div>' + badge + '</button>';
     }).join("");
-    return '<div class="stage-head"><h3>Chặng ' + s.id + ': ' + s.name + '</h3>' +
+    return '<div class="stage-head"><h3>Chương ' + s.id + ': ' + s.name + '</h3>' +
            '<span>' + (s.range[1] - s.range[0] + 1) + ' bài</span></div>' +
            '<p class="muted" style="margin:0 2px 9px;">' + s.note + '</p>' + rows;
   }).join("");
@@ -1453,6 +1453,10 @@ function renderStrum(){
   $("#strumChord").textContent = strum.prog().chords[0];
   $("#strumBpmLabel").textContent = strum.bpm + " bpm · " + st.note;
   $("#strumBpm").value = strum.bpm;
+  // Vào từ nút "Máy đệm" trong bài học thì điệu được đặt bằng code, hai ô chọn
+  // phải chỉnh theo, không thì máy đệm một đằng còn ô chọn hiện một nẻo.
+  $("#strumStyle").value = strum.styleId;
+  $("#strumProg").value = String(strum.progIdx);
 }
 
 function renderStrings(){
