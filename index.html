@@ -30,6 +30,9 @@
     font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   }
   *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  /* Các class như .field đặt display:block sẽ đè mất quy tắc [hidden] mặc định
+     của trình duyệt, nên phải ép ở đây. */
+  [hidden]{ display:none !important; }
   html,body{ height:100%; }
   body{ margin:0; color:var(--ink); background:var(--surface-2); font-size:15px; line-height:1.5; }
   button,input,select,textarea{ font:inherit; color:inherit; }
@@ -584,11 +587,13 @@
       <p class="muted" style="margin-top:9px; font-size:12px;">
         Thông tin dùng để trung tâm gọi tư vấn và xếp lớp gần bạn nhất.
       </p>
+      <div id="acFallback" hidden></div>
     </div>
 
     <div class="card">
       <div class="card-head"><h3>Chi nhánh</h3></div>
       <div id="branchList"></div>
+      <div id="contactBox"></div>
       <p class="muted" style="margin-top:10px;">
         Bạn ở khu vực khác? Cứ đăng ký khu vực của bạn — đủ học viên trong một
         khu là trung tâm mở điểm mới ở đó và gọi báo bạn.
@@ -649,9 +654,9 @@
    Cách lấy link: xem mục "Nhận đăng ký học viên" trong README. */
 const LEAD_ENDPOINT = "";
 
-/* Số để học viên gọi/nhắn khi chưa cấu hình LEAD_ENDPOINT. Để trống thì ẩn. */
-const CONTACT_PHONE = "";
-const CONTACT_ZALO  = "";
+/* Số để học viên gọi/nhắn Zalo. Để trống thì app ẩn hẳn phần liên hệ. */
+const CONTACT_PHONE = "0965817021";
+const CONTACT_ZALO  = "0965817021";
 
 /* Chi nhánh đang mở. Thêm chi nhánh mới thì thêm một dòng vào đây. */
 const BRANCHES = [
@@ -1350,6 +1355,25 @@ function areaLabel(){
   return a === "Khu vực khác" && S.acct.areaOther ? S.acct.areaOther : a;
 }
 
+/** 0965817021 → 0965 817 021, cho dễ đọc và dễ bấm trên điện thoại. */
+function prettyPhone(p){
+  return p.replace(/^(\d{4})(\d{3})(\d{3})$/, "$1 $2 $3");
+}
+
+/** Hai nút gọi và nhắn Zalo. Trả chuỗi rỗng nếu chưa cấu hình số. */
+function contactButtons(){
+  const parts = [];
+  if(CONTACT_PHONE){
+    parts.push('<a class="btn" href="tel:' + CONTACT_PHONE + '" style="text-decoration:none;">' +
+      'Gọi ' + prettyPhone(CONTACT_PHONE) + '</a>');
+  }
+  if(CONTACT_ZALO){
+    parts.push('<a class="btn alt" href="https://zalo.me/' + CONTACT_ZALO +
+      '" target="_blank" rel="noopener" style="text-decoration:none;">Nhắn Zalo</a>');
+  }
+  return parts.length ? '<div class="btn-row">' + parts.join("") + '</div>' : "";
+}
+
 function renderMe(){
   const a = S.acct;
   $("#acName").value = a.name;
@@ -1363,6 +1387,23 @@ function renderMe(){
   const registered = !!(a.email && a.phone);
   pill.textContent = !registered ? "Chưa đăng ký" : (a.sent ? "Đã đăng ký" : "Đã lưu, chưa gửi");
   pill.className = "pill" + (registered ? (a.sent ? " done" : " now") : "");
+
+  // Đăng ký xong mà chưa gửi được về trung tâm thì mời gọi/nhắn Zalo ngay,
+  // không thì lead coi như mất.
+  const fb = $("#acFallback");
+  const needFallback = registered && !a.sent && contactButtons();
+  fb.hidden = !needFallback;
+  if(needFallback){
+    fb.innerHTML =
+      '<p class="muted" style="margin:12px 0 8px;">Thông tin mới lưu trên máy bạn, ' +
+      'chưa gửi được về trung tâm. Bạn gọi hoặc nhắn Zalo giúp mình nhé:</p>' +
+      contactButtons();
+  }
+
+  $("#contactBox").innerHTML = contactButtons()
+    ? '<p class="muted" style="margin:12px 0 8px;">Cần tư vấn hoặc muốn xem lớp trực tiếp?</p>' +
+      contactButtons()
+    : "";
 
   $("#branchList").innerHTML = BRANCHES.map(b =>
     '<div class="log-row"><div class="what"><b>' + escapeHtml(b.name) + '</b>' +
