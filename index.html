@@ -220,6 +220,41 @@
   .field b{ display:block; font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:650; }
   select, input[type=text]{ width:100%; padding:10px 11px; border-radius:10px; border:1px solid var(--line); background:var(--surface); }
 
+  /* ---------- trang chào khách ---------- */
+  .welcome{
+    position:fixed; inset:0; z-index:70; display:none;
+    overflow-y:auto; background:var(--paper);
+    -webkit-overflow-scrolling:touch;
+  }
+  .welcome.open{ display:block; }
+  .welcome-inner{ max-width:520px; margin:0 auto; padding:26px 16px calc(28px + env(safe-area-inset-bottom)); }
+  .w-logo{ width:92px; height:92px; border-radius:26px; display:block; margin:0 auto 12px; }
+  .w-title{ text-align:center; font-size:23px; line-height:1.25; }
+  .w-sub{ text-align:center; color:var(--muted); font-size:14px; margin-top:7px; }
+  .w-offer{
+    background:linear-gradient(155deg,#5b4b40,#42362f); color:#f7f1e8;
+    border-radius:var(--radius); padding:16px; margin:18px 0 14px; text-align:center;
+  }
+  .w-offer b{ display:block; font-size:17px; margin-bottom:4px; }
+  .w-offer span{ font-size:13px; opacity:.85; }
+  .perk{ display:flex; gap:11px; align-items:flex-start; padding:11px 0; border-bottom:1px solid var(--line); }
+  .perk:last-child{ border-bottom:0; }
+  .perk .ico{
+    flex:none; width:34px; height:34px; border-radius:10px;
+    background:var(--brass-soft); color:#8a5f3d;
+    display:grid; place-items:center; font-size:16px;
+  }
+  .perk b{ display:block; font-size:14px; }
+  .perk span{ display:block; font-size:12.5px; color:var(--muted); margin-top:1px; }
+  .w-skip{
+    display:block; width:100%; margin-top:12px; padding:10px;
+    background:none; border:0; color:var(--muted); font-size:13px;
+    text-decoration:underline; cursor:pointer;
+  }
+
+  .lock-card{ text-align:center; }
+  .lock-card .lock-ico{ font-size:26px; }
+
   /* ---------- màn hình chi tiết ---------- */
   .video-wrap{
     position:relative; width:100%; aspect-ratio:16/9;
@@ -315,6 +350,93 @@
 </head>
 <body>
 
+<!-- ============ TRANG CHÀO KHÁCH ============ -->
+<div class="welcome" id="welcome">
+  <div class="welcome-inner">
+    <img class="w-logo" src="logo.png" alt="Guitar Cafe" width="92" height="92" />
+    <h1 class="w-title">Học guitar dễ dàng &amp; hiệu quả</h1>
+    <p class="w-sub">Đam mê không khoảng cách — 3 hình thức học linh hoạt,<br />phù hợp mọi nhu cầu, mọi lứa tuổi.</p>
+
+    <div class="w-offer">
+      <b>Tặng khoá đệm hát cơ bản</b>
+      <span>33 bài video quay sẵn · 8 điệu · học không giới hạn</span>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>3 hình thức học</h3></div>
+      <div class="perk">
+        <div class="ico">☕</div>
+        <div><b>Học tại quán</b><span>Không gian ấm cúng, giao lưu kết bạn, thực hành ngay và trình diễn định kỳ.</span></div>
+      </div>
+      <div class="perk">
+        <div class="ico">💻</div>
+        <div><b>Học online</b><span>Học mọi lúc mọi nơi, linh hoạt thời gian, lộ trình cá nhân hoá.</span></div>
+      </div>
+      <div class="perk">
+        <div class="ico">👤</div>
+        <div><b>Kèm 1-1</b><span>Kèm riêng một học viên, sửa lỗi chi tiết, lộ trình theo mục tiêu.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Vào app bạn có ngay</h3></div>
+      <div class="perk">
+        <div class="ico">▶</div>
+        <div><b>33 bài video theo giáo trình</b><span>Xem lại bao nhiêu lần cũng được, đúng lộ trình lớp offline.</span></div>
+      </div>
+      <div class="perk">
+        <div class="ico">♪</div>
+        <div><b>Máy đệm 8 điệu</b><span>Disco, Cha cha cha, Rumba, Bolero, Waltz, Boston, Slow Rock, Ballad.</span></div>
+      </div>
+      <div class="perk">
+        <div class="ico">🎸</div>
+        <div><b>Metronome và lên dây đàn</b><span>Lên dây bằng micro điện thoại, không cần cài thêm app nào.</span></div>
+      </div>
+      <div class="perk">
+        <div class="ico">▦</div>
+        <div><b>21 hợp âm có sơ đồ</b><span>Chạm vào là nghe tiếng đàn mẫu và xem mẹo bấm.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Đăng ký nhận khoá học</h3>
+        <span class="pill now">Miễn phí</span>
+      </div>
+      <div class="form-grid">
+        <label class="field full"><b>Họ và tên</b>
+          <input type="text" id="wName" placeholder="Nguyễn Văn A" />
+        </label>
+        <label class="field full"><b>Email</b>
+          <input type="email" id="wEmail" placeholder="ban@email.com" />
+        </label>
+        <label class="field"><b>Số điện thoại</b>
+          <input type="tel" id="wPhone" placeholder="09xx xxx xxx" />
+        </label>
+        <label class="field"><b>Khu vực muốn học</b>
+          <select id="wArea"></select>
+        </label>
+        <label class="field full" id="wAreaOtherWrap" hidden><b>Ghi rõ khu vực</b>
+          <input type="text" id="wAreaOther" placeholder="Ví dụ: Dĩ An, Bình Dương" />
+        </label>
+      </div>
+      <p class="muted" id="wError" style="color:var(--rose); margin-bottom:9px;" hidden></p>
+      <button class="btn" id="btnWelcomeRegister" style="padding:13px;">Nhận khoá học miễn phí</button>
+      <p class="muted" style="margin-top:9px; font-size:12px;">
+        Trung tâm dùng thông tin này để gọi tư vấn và xếp lớp gần bạn nhất.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Chi nhánh</h3></div>
+      <div id="wBranchList"></div>
+      <div id="wContact" style="margin-top:12px;"></div>
+    </div>
+
+    <button class="w-skip" id="btnSkipWelcome">Xem thử app trước đã</button>
+  </div>
+</div>
+
 <div class="app">
   <header class="appbar">
     <img class="mark" src="logo.png" alt="Dạy Guitar Tại Quán Cà Phê" width="36" height="36" />
@@ -363,6 +485,14 @@
       <div class="chord-grid" id="todayChords"></div>
     </div>
 
+    <button class="card" id="shopCard" style="width:100%; text-align:left; cursor:pointer; display:block;">
+      <div class="card-head">
+        <h3>Mua đàn tại Guitar Cafe</h3>
+        <span class="pill now">Tư vấn miễn phí</span>
+      </div>
+      <p class="muted">Chọn cây đàn hợp tay và hợp túi tiền, thử trực tiếp tại quán trước khi mua.</p>
+    </button>
+
     <button class="card" id="classCard" style="width:100%; text-align:left; cursor:pointer; display:block;">
       <div class="card-head">
         <h3 id="classCardName">Lớp học của tôi</h3>
@@ -378,6 +508,30 @@
   <section class="view" id="view-lesson">
     <button class="backbar" id="lessonBack">← Nội dung khoá học</button>
     <div id="lessonDetail"></div>
+  </section>
+
+  <!-- ============ BÁN ĐÀN ============ -->
+  <section class="view" id="view-shop">
+    <button class="backbar" data-back="today">← Hôm nay</button>
+
+    <div class="hero">
+      <div class="eyebrow">Đàn tại Guitar Cafe</div>
+      <h2>Mua đàn &amp; tư vấn chọn đàn</h2>
+      <p>Người mới rất dễ mua nhầm đàn cần cao, bấm đau tay rồi bỏ. Ghé quán thử trước, chọn cây hợp tay bạn.</p>
+    </div>
+
+    <div id="guitarList"></div>
+
+    <div class="card">
+      <div class="card-head"><h3>Đặt đàn hoặc hỏi thêm</h3></div>
+      <p class="muted" style="margin-bottom:11px;">Nhắn fanpage để được tư vấn theo tầm giá và mục đích chơi của bạn.</p>
+      <div id="shopContact"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Ghé thử đàn</h3></div>
+      <div id="shopBranches"></div>
+    </div>
   </section>
 
   <!-- ============ CHI TIẾT LỚP HỌC ============ -->
@@ -662,6 +816,13 @@ const CONTACT_ZALO  = "0965817021";
    để khách hỏi tư vấn và đặt lịch học. Để trống thì ẩn nút. */
 const FANPAGE = "dayguitartaiquancafe";
 
+/* Dan dang ban. Them mot dong la app tu hien them mot the.
+   `img` de trong thi the van chay, chi khong co anh.
+   Vi du:
+     { name:"Guitar Acoustic Rosen G11", price:"1.850.000đ",
+       note:"Gỗ ép, cần thẳng, hợp người mới tập", img:"dan/rosen-g11.jpg" }  */
+const GUITARS = [];
+
 /* Chi nhánh đang mở. Thêm chi nhánh mới thì thêm một dòng vào đây. */
 const BRANCHES = [
   { name:"Chi nhánh Tân Phú", address:"Số 10 Đô Đốc Thủ, Tân Phú, TP.HCM", open:true }
@@ -809,6 +970,7 @@ const defaultState = () => ({
   // Tài khoản học viên tự đăng ký. `sent` = đã gửi được về trung tâm chưa,
   // để còn gửi lại nếu lần đầu rớt mạng.
   acct:{ name:"", email:"", phone:"", area:"", areaOther:"", at:"", sent:false },
+  skipWelcome:false,  // khách bấm "xem thử trước" thì thôi không chào lại
 
   done:[],            // số bài đã hoàn thành
   chords:[],          // tên hợp âm đã đánh dấu thuộc
@@ -1392,6 +1554,47 @@ function contactButtons(){
   return html;
 }
 
+function daDangKy(){
+  return !!(S.acct.email && S.acct.phone);
+}
+
+function branchListHtml(){
+  return BRANCHES.map(b =>
+    '<div class="log-row"><div class="what"><b>' + escapeHtml(b.name) + '</b>' +
+    '<div class="muted">' + escapeHtml(b.address) + '</div></div>' +
+    '<span class="pill done">Đang mở</span></div>').join("");
+}
+
+function showWelcome(){
+  $("#wBranchList").innerHTML = branchListHtml();
+  $("#wContact").innerHTML = messengerButton();
+  $("#welcome").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function hideWelcome(){
+  $("#welcome").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function renderShop(){
+  $("#guitarList").innerHTML = GUITARS.length
+    ? GUITARS.map(g =>
+        '<div class="card">' +
+          (g.img ? '<img src="' + g.img + '" alt="' + escapeHtml(g.name) + '" ' +
+            'style="width:100%; border-radius:11px; display:block; margin-bottom:9px;" loading="lazy" />' : '') +
+          '<div class="card-head"><h3>' + escapeHtml(g.name) + '</h3>' +
+          (g.price ? '<span class="pill now">' + escapeHtml(g.price) + '</span>' : '') + '</div>' +
+          (g.note ? '<p class="muted">' + escapeHtml(g.note) + '</p>' : '') +
+        '</div>').join("")
+    : '<div class="card"><div class="card-head"><h3>Đàn đang có</h3>' +
+      '<span class="pill">Đang cập nhật</span></div>' +
+      '<p class="muted">Trung tâm đang cập nhật danh sách đàn kèm giá. Trong lúc đó ' +
+      'bạn cứ nhắn fanpage, bên mình tư vấn theo tầm giá bạn muốn.</p></div>';
+
+  $("#shopContact").innerHTML = contactButtons();
+  $("#shopBranches").innerHTML = branchListHtml();
+}
+
 function renderMe(){
   const a = S.acct;
   $("#acName").value = a.name;
@@ -1499,7 +1702,14 @@ function openLesson(n, backTo){
   const strum = l.strum ? STRUM_STYLES.find(s => s.id === l.strum) : null;
 
   // Video de trong thi khong ve trinh phat; dan link vao LESSONS la tu hien.
-  const videoHtml = l.video
+  const videoHtml = (l.video && !daDangKy())
+    // Khoá này là quà tặng khi đăng ký, nên video chỉ mở sau khi có thông tin.
+    ? '<div class="card lock-card"><div class="lock-ico">🔒</div>' +
+      '<h3 style="margin:6px 0 4px;">Video bài giảng</h3>' +
+      '<p class="muted" style="margin-bottom:11px;">Đăng ký miễn phí một lần là xem được ' +
+      'trọn bộ 33 bài video, không giới hạn số lần xem.</p>' +
+      '<button class="btn" data-act="mo-dang-ky">Đăng ký để mở khoá video</button></div>'
+    : l.video
     ? '<div class="card"><div class="card-head"><h3>Video bài giảng</h3></div>' +
       '<div class="video-wrap">' + videoEmbed(l.video) + '</div></div>'
     // Nói rõ là chưa quay, không thì học viên tưởng app lỗi.
@@ -1708,13 +1918,15 @@ function escapeHtml(s){
 function show(view){
   $$(".view").forEach(v => v.classList.toggle("active", v.id === "view-" + view));
   // Hai màn chi tiết không có tab riêng: sáng tab gần nhất về mặt ngữ nghĩa.
-  const tabFor = view === "lesson" ? lessonBackTo : view === "class" ? "today" : view;
+  const tabFor = view === "lesson" ? lessonBackTo
+    : (view === "class" || view === "shop") ? "today" : view;
   $$(".tab").forEach(t => t.classList.toggle("active", t.dataset.view === tabFor));
   if(view === "today")   renderToday();
   if(view === "path")    renderPath();
   if(view === "chords")  renderChords();
   if(view === "me")      renderMe();
   if(view === "class")   renderClassView();
+  if(view === "shop")    renderShop();
   window.scrollTo({ top:0, behavior:"instant" in document.documentElement.style ? "instant" : "auto" });
 }
 
@@ -1792,6 +2004,14 @@ function lessonAct(btn){
     return;
   }
 
+  if(act === "mo-dang-ky"){
+    showWelcome();
+    $("#wName").focus({ preventScroll:true });
+    document.querySelector(".welcome-inner .card:nth-of-type(3)")
+      ?.scrollIntoView({ behavior:"smooth", block:"start" });
+    return;
+  }
+
   if(act === "strum"){
     strum.stop();
     strum.styleId = btn.dataset.style;
@@ -1862,6 +2082,7 @@ function openChordDetail(name){
 
 /* lớp học */
 $("#classCard").addEventListener("click", () => show("class"));
+$("#shopCard").addEventListener("click", () => show("shop"));
 
 $("#btnAddLog").addEventListener("click", () => {
   const f = $("#logForm");
@@ -1970,10 +2191,6 @@ function selectTool(id){
 $$(".tool-tabs button").forEach(b => b.addEventListener("click", () => selectTool(b.dataset.tool)));
 
 /* hồ sơ */
-$("#acArea").addEventListener("change", e => {
-  $("#acAreaOtherWrap").hidden = e.target.value !== "Khu vực khác";
-});
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** Số Việt Nam: bỏ khoảng trắng/gạch rồi kiểm tra 9-11 chữ số, cho phép +84. */
@@ -2000,15 +2217,17 @@ async function sendLead(acct){
   }
 }
 
-$("#btnRegister").addEventListener("click", async () => {
-  const err = $("#acError");
-  const name = $("#acName").value.trim();
-  const email = $("#acEmail").value.trim();
-  const phone = normPhone($("#acPhone").value);
-  const area = $("#acArea").value;
-  const areaOther = $("#acAreaOther").value.trim();
+/* Dùng chung cho form ở trang chào và form ở màn Tôi. `p` là tiền tố id của
+   các ô nhập, ví dụ "ac" cho #acName hoặc "w" cho #wName. */
+async function submitRegistration(p, btn, nhanXong){
+  const err = $("#" + p + "Error");
+  const name = $("#" + p + "Name").value.trim();
+  const email = $("#" + p + "Email").value.trim();
+  const phone = normPhone($("#" + p + "Phone").value);
+  const area = $("#" + p + "Area").value;
+  const areaOther = $("#" + p + "AreaOther").value.trim();
 
-  const fail = m => { err.textContent = m; err.hidden = false; };
+  const fail = m => { err.textContent = m; err.hidden = false; return false; };
   err.hidden = true;
 
   if(!name) return fail("Bạn nhập giúp họ tên nhé.");
@@ -2020,15 +2239,35 @@ $("#btnRegister").addEventListener("click", async () => {
   S.name = name;
   save();
 
-  const btn = $("#btnRegister");
+  const chuCu = btn.textContent;
   btn.disabled = true; btn.textContent = "Đang gửi...";
   S.acct.sent = await sendLead(S.acct);
-  btn.disabled = false; btn.textContent = "Đăng ký / cập nhật";
+  btn.disabled = false; btn.textContent = chuCu;
   save(); renderMe(); renderToday();
 
   toast(S.acct.sent
     ? "Đã đăng ký! Trung tâm sẽ liên hệ bạn sớm."
     : "Đã lưu thông tin trên máy bạn.");
+  if(nhanXong) nhanXong();
+  return true;
+}
+
+$("#acArea").addEventListener("change", e => {
+  $("#acAreaOtherWrap").hidden = e.target.value !== "Khu vực khác";
+});
+$("#wArea").addEventListener("change", e => {
+  $("#wAreaOtherWrap").hidden = e.target.value !== "Khu vực khác";
+});
+
+$("#btnRegister").addEventListener("click", e => submitRegistration("ac", e.currentTarget));
+
+$("#btnWelcomeRegister").addEventListener("click", async e => {
+  const ok = await submitRegistration("w", e.currentTarget);
+  if(ok){ hideWelcome(); show("today"); }
+});
+
+$("#btnSkipWelcome").addEventListener("click", () => {
+  S.skipWelcome = true; save(); hideWelcome();
 });
 $("#btnExport").addEventListener("click", async () => {
   const text = JSON.stringify(S, null, 2);
@@ -2062,7 +2301,9 @@ document.addEventListener("visibilitychange", () => { if(document.hidden) stopAl
    ===================================================================== */
 $("#strumStyle").innerHTML = STRUM_STYLES.map(s => '<option value="' + s.id + '">' + s.name + '</option>').join("");
 $("#strumProg").innerHTML  = PROGRESSIONS.map((p, i) => '<option value="' + i + '">' + p.name + '</option>').join("");
-$("#acArea").innerHTML = AREAS.map(a => '<option>' + a + '</option>').join("");
+const areaOptions = AREAS.map(a => '<option>' + a + '</option>').join("");
+$("#acArea").innerHTML = areaOptions;
+$("#wArea").innerHTML = areaOptions;
 $("#metroBeats").value = String(S.beats);
 strum.bpm = strum.style().defBpm;
 
@@ -2074,6 +2315,9 @@ renderToday();
 renderPath();
 renderChords();
 renderMe();
+
+// Khách mới vào thì chào và mời đăng ký; đã đăng ký hoặc đã bấm xem thử thì thôi.
+if(!daDangKy() && !S.skipWelcome) showWelcome();
 </script>
 </body>
 </html>
