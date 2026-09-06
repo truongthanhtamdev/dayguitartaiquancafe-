@@ -29,29 +29,41 @@ Tất cả nằm trong khối **CẤU HÌNH** ở đầu thẻ `<script>` của 
 Trong mảng `LESSONS`, mỗi bài có sẵn trường `video:""`. Điền vào là app tự hiện
 trình phát ngay đầu trang bài học. Có hai cách:
 
-**Cách A — để video ngay trong repo (không qua web nào khác).** Học viên xem
-bằng trình phát của chính app, không thấy YouTube, không có video gợi ý:
+**Cách A — YouTube (khuyên dùng).** Upload lên YouTube để chế độ **Không công
+khai (Unlisted)**, rồi dán link vào:
 
 ```js
-{n:13, ch:3, no:5, t:"Điệu Disco (2/4)", ..., video:"videos/chuong3-bai5.mp4"},
+{n:13, ch:3, no:5, t:"Điệu Disco (2/4)", ..., video:"https://youtu.be/XXXXXXXXXXX"},
 ```
 
-Nhớ nén trước bằng `nen-video.ps1` — xem hướng dẫn và giới hạn dung lượng
-trong [videos/README.md](videos/README.md).
+Nhận mọi dạng link: `youtu.be/...`, `youtube.com/watch?v=...`, `embed/...`,
+`shorts/...`, `live/...`. Video vẫn phát **ngay trong app**, học viên không
+phải rời trang.
 
-**Cách B — dùng link ngoài.** Nhận link YouTube (`youtu.be/...`,
-`youtube.com/watch?v=...`, `embed/...`, `shorts/...`) hoặc link file
-`.mp4` / `.webm` / `.mov` từ bất kỳ nơi nào:
+App nhúng qua `youtube-nocookie.com` và tắt bớt phiền: `rel=0` giới hạn video
+gợi ý cuối clip trong cùng kênh, `playsinline=1` để iPhone không nhảy ra toàn
+màn hình, `iv_load_policy=3` tắt chú thích nổi.
+
+Để **Riêng tư (Private)** thì không nhúng được — phải là Unlisted hoặc Công
+khai.
+
+**Cách B — để video ngay trong repo.** Không dính YouTube chút nào, nhưng
+vướng giới hạn dung lượng của GitHub Pages:
 
 ```js
-video:"https://youtu.be/XXXXXXXXXXX"
+video:"videos/chuong3-bai5.mp4"
+```
+
+Phải nén trước bằng `nen-video.ps1` — xem giới hạn và hướng dẫn trong
+[videos/README.md](videos/README.md). Chỉ hợp khi bài ngắn và ít bài.
+
+Cũng nhận link file từ nơi khác (Cloudflare R2, VPS...):
+
+```js
 video:"https://media.tenmien.com/chuong3-bai5.mp4"
 ```
 
-Video YouTube để **Không công khai (Unlisted)** thì nhúng được; để **Riêng tư
-(Private)** thì không.
-
-Đổi qua lại giữa hai cách chỉ cần sửa ô `video`, không phải sửa code.
+Đổi qua lại giữa các cách chỉ cần sửa ô `video`, không phải sửa code.
 
 ### 2. Nhận đăng ký của học viên
 

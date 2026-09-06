@@ -1546,10 +1546,15 @@ function openLesson(n, backTo){
 /* Nhan link YouTube (day du hoac rut gon) va link nhung san; con lai coi la
    file video truc tiep. */
 function videoEmbed(url){
-  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([\w-]{11})/);
   if(yt){
-    return '<iframe src="https://www.youtube.com/embed/' + yt[1] + '" title="Video bài giảng" ' +
-           'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" ' +
+    // youtube-nocookie: không đặt cookie theo dõi cho tới khi học viên bấm phát.
+    // rel=0 giới hạn video gợi ý cuối clip trong cùng kênh, playsinline=1 để
+    // iPhone phát ngay trong app thay vì nhảy ra toàn màn hình.
+    const q = "rel=0&modestbranding=1&playsinline=1&iv_load_policy=3";
+    return '<iframe src="https://www.youtube-nocookie.com/embed/' + yt[1] + '?' + q + '" ' +
+           'title="Video bài giảng" ' +
+           'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture; fullscreen" ' +
            'allowfullscreen loading="lazy"></iframe>';
   }
   // Nhận cả đường dẫn tương đối ("videos/ch3-bai5.mp4") để đặt file video ngay
