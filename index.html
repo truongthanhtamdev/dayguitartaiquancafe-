@@ -1552,8 +1552,13 @@ function videoEmbed(url){
            'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" ' +
            'allowfullscreen loading="lazy"></iframe>';
   }
-  if(/^https?:\/\/[^\s]+\.(mp4|webm|ogg)(\?|$)/i.test(url)){
-    return '<video src="' + url + '" controls playsinline preload="metadata"></video>';
+  // Nhận cả đường dẫn tương đối ("videos/ch3-bai5.mp4") để đặt file video ngay
+  // trong repo, học viên xem thẳng trong app chứ không qua web nào khác.
+  if(/\.(mp4|m4v|webm|ogg|ogv|mov)(\?|#|$)/i.test(url)){
+    return '<video src="' + url + '" controls playsinline preload="metadata" ' +
+           'controlsList="nodownload" oncontextmenu="return false">' +
+           'Trình duyệt của bạn không mở được video này. ' +
+           '<a href="' + url + '">Tải video về xem</a>.</video>';
   }
   return '<iframe src="' + url + '" title="Video bài giảng" allowfullscreen loading="lazy"></iframe>';
 }

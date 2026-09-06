@@ -26,19 +26,32 @@ Tất cả nằm trong khối **CẤU HÌNH** ở đầu thẻ `<script>` của 
 
 ### 1. Dán video bài giảng
 
-Trong mảng `LESSONS`, mỗi bài có sẵn trường `video:""`. Dán link vào là app tự
-hiện trình phát ngay đầu trang bài học:
+Trong mảng `LESSONS`, mỗi bài có sẵn trường `video:""`. Điền vào là app tự hiện
+trình phát ngay đầu trang bài học. Có hai cách:
+
+**Cách A — để video ngay trong repo (không qua web nào khác).** Học viên xem
+bằng trình phát của chính app, không thấy YouTube, không có video gợi ý:
 
 ```js
-{n:13, ch:3, no:5, t:"Điệu Disco (2/4)", ..., video:"https://youtu.be/XXXXXXXXXXX"},
+{n:13, ch:3, no:5, t:"Điệu Disco (2/4)", ..., video:"videos/chuong3-bai5.mp4"},
 ```
 
-Nhận được: link YouTube dạng `youtu.be/...`, `youtube.com/watch?v=...`,
-`youtube.com/embed/...`, `youtube.com/shorts/...`, hoặc link file `.mp4` /
-`.webm` / `.ogg` trực tiếp.
+Nhớ nén trước bằng `nen-video.ps1` — xem hướng dẫn và giới hạn dung lượng
+trong [videos/README.md](videos/README.md).
 
-Nếu video để chế độ **Không công khai (Unlisted)** thì vẫn nhúng được; để
-**Riêng tư (Private)** thì không nhúng được.
+**Cách B — dùng link ngoài.** Nhận link YouTube (`youtu.be/...`,
+`youtube.com/watch?v=...`, `embed/...`, `shorts/...`) hoặc link file
+`.mp4` / `.webm` / `.mov` từ bất kỳ nơi nào:
+
+```js
+video:"https://youtu.be/XXXXXXXXXXX"
+video:"https://media.tenmien.com/chuong3-bai5.mp4"
+```
+
+Video YouTube để **Không công khai (Unlisted)** thì nhúng được; để **Riêng tư
+(Private)** thì không.
+
+Đổi qua lại giữa hai cách chỉ cần sửa ô `video`, không phải sửa code.
 
 ### 2. Nhận đăng ký của học viên
 
