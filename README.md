@@ -65,6 +65,20 @@ video:"https://media.tenmien.com/chuong3-bai5.mp4"
 
 Đổi qua lại giữa các cách chỉ cần sửa ô `video`, không phải sửa code.
 
+#### 5 bài còn thiếu video
+
+28/33 bài đã gắn video từ playlist *Khoá Học Guitar Cơ Bản*. Năm bài dưới đây
+chưa có, app đang hiện "Video bài giảng — Đang cập nhật". Quay xong thì mở
+`index.html`, tìm dòng có `ch:` và `no:` tương ứng rồi điền vào ô `video`:
+
+| Bài | Tên | Dòng cần sửa |
+|---|---|---|
+| Chương 2 · Bài 3 | Nốt nhạc từ ngăn 5 trở đi | `ch:2, no:3` |
+| Chương 2 · Bài 4 | Các nốt thăng (#) và giáng (b) | `ch:2, no:4` |
+| Chương 5 · Bài 1 | Mẫu hình nốt đơn, nốt kép (4/4) | `ch:5, no:1` |
+| Chương 5 · Bài 2 | Strumming — bài tập 1 | `ch:5, no:2` |
+| Chương 6 · Bài 6 | Tổng kết về điệu nhạc | `ch:6, no:6` |
+
 ### 2. Nhận đăng ký của học viên
 
 Mặc định `LEAD_ENDPOINT = ""` — học viên đăng ký thì thông tin **chỉ lưu trên
