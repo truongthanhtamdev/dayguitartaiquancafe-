@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#4a3d35" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="description" content="Day Guitar Tai Quan Ca Phe - app hoc guitar 36 buoi: lo trinh, thu vien hop am, metronome, len day dan va may dem hat." />
+<meta name="description" content="Day Guitar Tai Quan Ca Phe - hoc dem hat co ban: 33 bai, 8 dieu, thu vien hop am, metronome, len day dan va may dem hat." />
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="icon" href="icon-192.png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-<title>Dạy Guitar Tại Quán Cà Phê — Học guitar 36 buổi</title>
+<title>Dạy Guitar Tại Quán Cà Phê — Khoá đệm hát cơ bản</title>
 <style>
   :root{
     /* Bang mau lay tu logo: nen kem, net brass, chu nau espresso */
@@ -218,6 +218,13 @@
   select, input[type=text]{ width:100%; padding:10px 11px; border-radius:10px; border:1px solid var(--line); background:var(--surface); }
 
   /* ---------- màn hình chi tiết ---------- */
+  .video-wrap{
+    position:relative; width:100%; aspect-ratio:16/9;
+    border-radius:11px; overflow:hidden; background:#000; border:1px solid var(--line);
+  }
+  .video-wrap iframe, .video-wrap video{
+    position:absolute; inset:0; width:100%; height:100%; border:0; display:block;
+  }
   .backbar{
     display:flex; align-items:center; gap:6px; margin:-4px 0 12px;
     font-size:13px; font-weight:650; color:var(--muted);
@@ -310,7 +317,7 @@
     <img class="mark" src="logo.png" alt="Dạy Guitar Tại Quán Cà Phê" width="36" height="36" />
     <div class="who">
       <b id="hello">Guitar Cà Phê</b>
-      <span id="subhello">Lộ trình 36 buổi · đệm hát cơ bản</span>
+      <span id="subhello">Khoá đệm hát cơ bản · 33 bài</span>
     </div>
     <button class="ghost-btn" id="btnPanic" title="Tắt mọi âm thanh">Dừng tiếng</button>
   </header>
@@ -318,16 +325,16 @@
   <!-- ============ HÔM NAY ============ -->
   <section class="view active" id="view-today">
     <div class="card" style="background:linear-gradient(155deg,#5b4b40,#42362f); border-color:#42362f; color:#f7f1e8;">
-      <div class="eyebrow" style="color:rgba(242,239,229,.6)">Buổi kế tiếp</div>
+      <div class="eyebrow" style="color:rgba(242,239,229,.6)">Bài kế tiếp</div>
       <h2 id="todayTitle" style="font-size:21px; margin-bottom:5px;">Bài 01 · Làm quen guitar</h2>
       <p id="todayGoal" style="font-size:13.5px; opacity:.82; margin-bottom:12px;">Tư thế ngồi, cách cầm đàn, tên dây.</p>
       <div class="progress" style="background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.2)">
         <i id="todayBar" style="width:0%; background:var(--brass)"></i>
       </div>
       <div style="display:flex; justify-content:space-between; font-size:11.5px; opacity:.75; margin:6px 0 12px;">
-        <span id="todayCount">0 / 36 buổi</span><span id="todayStage">Chặng 1</span>
+        <span id="todayCount">0 / 33 bài</span><span id="todayStage">Chương 1</span>
       </div>
-      <button class="btn" id="btnOpenToday" style="background:var(--brass); border-color:var(--brass); color:#fff;">Mở buổi học</button>
+      <button class="btn" id="btnOpenToday" style="background:var(--brass); border-color:var(--brass); color:#fff;">Vào học bài này</button>
     </div>
 
     <div class="stat-row" style="margin-bottom:12px;">
@@ -349,7 +356,7 @@
     </div>
 
     <div class="card">
-      <div class="card-head"><h3>Hợp âm của buổi này</h3></div>
+      <div class="card-head"><h3>Hợp âm của bài này</h3></div>
       <div class="chord-grid" id="todayChords"></div>
     </div>
 
@@ -366,7 +373,7 @@
 
   <!-- ============ CHI TIẾT BUỔI HỌC ============ -->
   <section class="view" id="view-lesson">
-    <button class="backbar" id="lessonBack">← Lộ trình 36 buổi</button>
+    <button class="backbar" id="lessonBack">← Nội dung khoá học</button>
     <div id="lessonDetail"></div>
   </section>
 
@@ -460,10 +467,10 @@
     <div class="card">
       <div class="card-head">
         <h3>Tiến độ khoá cơ bản</h3>
-        <span class="pill done" id="pathPill">0 / 36</span>
+        <span class="pill done" id="pathPill">0 / 33</span>
       </div>
       <div class="progress"><i id="pathBar" style="width:0%"></i></div>
-      <p class="muted" style="margin-top:8px;">Hoàn thành 36 buổi để tự đệm hát với 14 hợp âm trưởng/thứ, Slow Rock, Ballad và quạt chả.</p>
+      <p class="muted" style="margin-top:8px;">Học hết 33 bài là bạn bấm được các hợp âm căn bản 3 ngăn đầu, hiểu 4 loại nhịp 4/4, 2/4, 3/4, 6/8 và đệm hát được với 8 điệu cơ bản.</p>
     </div>
     <div class="chip-row" id="stageChips"></div>
     <div id="lessonList"></div>
@@ -551,21 +558,46 @@
   <!-- ============ TÀI KHOẢN ============ -->
   <section class="view" id="view-me">
     <div class="card">
-      <div class="card-head"><h3>Học viên</h3></div>
-      <label class="field"><b>Tên hiển thị</b><input type="text" id="nameInput" placeholder="Nhập tên của bạn" /></label>
-      <label class="field"><b>Chi nhánh đang học</b>
-        <select id="branchInput">
-          <option>Nguyễn Trãi — khu acoustic tầng 2</option>
-          <option>Phan Xích Long — phòng nhóm</option>
-          <option>Tự học tại nhà</option>
-        </select>
-      </label>
-      <button class="btn" id="btnSaveProfile">Lưu thông tin</button>
+      <div class="card-head">
+        <h3>Tài khoản</h3>
+        <span class="pill" id="acctPill">Chưa đăng ký</span>
+      </div>
+      <div class="form-grid">
+        <label class="field full"><b>Họ và tên</b>
+          <input type="text" id="acName" placeholder="Nguyễn Văn A" />
+        </label>
+        <label class="field full"><b>Email</b>
+          <input type="email" id="acEmail" placeholder="ban@email.com" />
+        </label>
+        <label class="field"><b>Số điện thoại</b>
+          <input type="tel" id="acPhone" placeholder="09xx xxx xxx" />
+        </label>
+        <label class="field"><b>Khu vực muốn học</b>
+          <select id="acArea"></select>
+        </label>
+        <label class="field full" id="acAreaOtherWrap" hidden><b>Ghi rõ khu vực</b>
+          <input type="text" id="acAreaOther" placeholder="Ví dụ: Dĩ An, Bình Dương" />
+        </label>
+      </div>
+      <p class="muted" id="acError" style="color:var(--rose); margin-bottom:9px;" hidden></p>
+      <button class="btn" id="btnRegister">Đăng ký / cập nhật</button>
+      <p class="muted" style="margin-top:9px; font-size:12px;">
+        Thông tin dùng để trung tâm gọi tư vấn và xếp lớp gần bạn nhất.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Chi nhánh</h3></div>
+      <div id="branchList"></div>
+      <p class="muted" style="margin-top:10px;">
+        Bạn ở khu vực khác? Cứ đăng ký khu vực của bạn — đủ học viên trong một
+        khu là trung tâm mở điểm mới ở đó và gọi báo bạn.
+      </p>
     </div>
     <div class="card">
       <div class="card-head"><h3>Thống kê</h3></div>
       <div class="stat-row">
-        <div class="stat"><b id="meLessons">0</b><span>buổi xong</span></div>
+        <div class="stat"><b id="meLessons">0</b><span>bài xong</span></div>
         <div class="stat"><b id="meChords">0</b><span>hợp âm</span></div>
         <div class="stat"><b id="meDays">0</b><span>ngày luyện</span></div>
       </div>
@@ -609,54 +641,79 @@
 "use strict";
 
 /* =====================================================================
-   1. DỮ LIỆU — 36 buổi học, chia 6 chặng
+   0. CẤU HÌNH — sửa ở đây, không phải lục trong code
    ===================================================================== */
-const STAGES = [
-  { id:1, name:"Làm quen đàn và nhịp",        tag:"Nền tảng",   range:[1,6],   note:"Cầm đàn đúng, đọc hợp âm và chơi những vòng đầu tiên." },
-  { id:2, name:"14 hợp âm trưởng/thứ",        tag:"14 hợp âm",  range:[7,14],  note:"Mở rộng vốn hợp âm để bắt đầu đệm được nhiều bài phổ biến." },
-  { id:3, name:"Điệu Slow Rock",              tag:"Slow Rock",  range:[15,20], note:"Vào nhịp đệm hát đầu tiên: chậm, đều và dễ hát theo." },
-  { id:4, name:"Điệu Ballad",                 tag:"Ballad",     range:[21,26], note:"Đệm mềm hơn, giữ cảm xúc và không làm gãy lời hát." },
-  { id:5, name:"Quạt chả và ứng dụng bài hát",tag:"Quạt chả",   range:[27,32], note:"Chắc tay phải hơn và áp dụng vào bài phổ thông." },
-  { id:6, name:"Hoàn thiện đệm hát cơ bản",   tag:"Tốt nghiệp", range:[33,36], note:"Ôn, sửa lỗi và hoàn thành bài tốt nghiệp." }
+
+/* Nơi nhận đăng ký của học viên. Để trống thì app vẫn lưu trên máy và hiện
+   nút gửi qua Zalo/điện thoại, nhưng trung tâm sẽ KHÔNG tự nhận được lead.
+   Cách lấy link: xem mục "Nhận đăng ký học viên" trong README. */
+const LEAD_ENDPOINT = "";
+
+/* Số để học viên gọi/nhắn khi chưa cấu hình LEAD_ENDPOINT. Để trống thì ẩn. */
+const CONTACT_PHONE = "";
+const CONTACT_ZALO  = "";
+
+/* Chi nhánh đang mở. Thêm chi nhánh mới thì thêm một dòng vào đây. */
+const BRANCHES = [
+  { name:"Chi nhánh Tân Phú", address:"Số 10 Đô Đốc Thủ, Tân Phú, TP.HCM", open:true }
 ];
 
+/* Khu vực để học viên chọn khi đăng ký. Dùng để biết nên mở điểm ở đâu. */
+const AREAS = [
+  "Tân Phú", "Tân Bình", "Bình Tân", "Gò Vấp", "Phú Nhuận", "Bình Thạnh",
+  "Quận 1", "Quận 3", "Quận 4", "Quận 5", "Quận 6", "Quận 7", "Quận 8",
+  "Quận 10", "Quận 11", "Quận 12", "Thủ Đức", "Bình Chánh", "Hóc Môn",
+  "Nhà Bè", "Củ Chi", "Học online", "Khu vực khác"
+];
+
+/* =====================================================================
+   1. DỮ LIỆU — giáo trình đệm hát cơ bản: 6 chương, 33 bài
+   ===================================================================== */
+const STAGES = [
+  { id:1, name:"Các bước chuẩn bị",        tag:"Chuẩn bị",  range:[1,4],   note:"Cầm đàn đúng, biết các bộ phận của đàn và lên dây được." },
+  { id:2, name:"Nốt nhạc và cần đàn",      tag:"Nốt nhạc",  range:[5,8],   note:"Thuộc 7 nốt cơ bản, đọc được nốt trên cần đàn và hiểu thăng giáng." },
+  { id:3, name:"Nhịp 4/4 và 2/4",          tag:"4/4 · 2/4", range:[9,16],  note:"Hai nhịp thông dụng nhất, kèm 4 điệu: Disco, Cha cha cha, Rumba, Bolero." },
+  { id:4, name:"Nhịp 3/4 và 6/8",          tag:"3/4 · 6/8", range:[17,23], note:"Nhóm nhịp lẻ và cảm giác liên 3, kèm Waltz, Boston, Slow Rock, Ballad." },
+  { id:5, name:"Strumming — quạt chả",     tag:"Quạt chả",  range:[24,27], note:"Tay phải: mẫu hình nốt đơn, nốt kép và ba bài tập quạt chả." },
+  { id:6, name:"Strumming — các mẫu đệm",  tag:"Mẫu đệm",   range:[28,33], note:"Ghép tay phải vào từng điệu và tư duy chọn điệu cho bài hát." }
+];
+
+/* 33 bài theo giáo trình trên guitardemhat.com. `url` trỏ về trang bài học
+   gốc; `video` để trống, dán link video vào là app tự hiện trình phát. */
 const LESSONS = [
-  {n:1,  t:"Làm quen guitar",        d:"Tư thế ngồi, cách cầm đàn, tên dây.",                 r:"Biết cầm đàn đúng và gảy từng dây rõ tiếng.",           p:"Gảy dây 1-6 chậm, đều 5 phút/ngày.",                    c:[],                    bpm:60},
-  {n:2,  t:"Tay trái và tay phải",   d:"Bấm phím, móng/tay gảy, tránh rè tiếng.",             r:"Bấm được nốt đơn và nghe ra tiếng sạch/rè.",            p:"Bấm từng ngăn trên dây 1 và dây 2.",                    c:[],                    bpm:60},
-  {n:3,  t:"Đọc sơ đồ hợp âm",       d:"Ký hiệu dây, phím, ngón tay, dây không đánh.",        r:"Tự nhìn chart và đặt tay theo sơ đồ.",                  p:"Đọc 5 sơ đồ hợp âm mẫu trong app.",                     c:["Em","Am","C","G","D"], bpm:60},
-  {n:4,  t:"Nhịp và phách",          d:"Đếm 1-2-3-4, vỗ nhịp, giữ tempo chậm.",               r:"Giữ nhịp đều khi gảy xuống.",                           p:"Bật metronome 60 bpm và gảy xuống 4 phách.",            c:[],                    bpm:60},
-  {n:5,  t:"Hợp âm Em và Am",        d:"Hai hợp âm thứ dễ nhất cho người mới.",               r:"Bấm và chuyển Em - Am chậm, sạch tiếng.",               p:"Chuyển Em - Am 30 vòng/ngày.",                          c:["Em","Am"],           bpm:60},
-  {n:6,  t:"Hợp âm C và G",          d:"Thêm hai hợp âm trưởng thường gặp.",                  r:"Chơi vòng C - G - Am - Em chậm.",                       p:"Quay video 45 giây vòng C - G - Am - Em.",              c:["C","G"],             bpm:62},
-  {n:7,  t:"Hợp âm D và Dm",         d:"Tập cụm dây dưới và kiểm soát dây không đánh.",       r:"Bấm được D, Dm và chuyển từ Am sang Dm.",               p:"Am - Dm - G - C, 20 vòng.",                             c:["D","Dm"],            bpm:64},
-  {n:8,  t:"Hợp âm A và E",          d:"Nhóm hợp âm mở dùng nhiều trong giọng A/E.",          r:"Chuyển A - E - D đúng nhịp chậm.",                      p:"A - E - D - A với metronome 65 bpm.",                   c:["A","E"],             bpm:65},
-  {n:9,  t:"Hợp âm F và Fmaj7",      d:"Làm quen thế bấm khó hơn trước khi chặn.",            r:"Biết phương án F dễ để ghép bài hát cơ bản.",           p:"C - Fmaj7 - G - C, giữ tiếng sạch.",                    c:["Fmaj7","F"],         bpm:64},
-  {n:10, t:"Hợp âm Bm đơn giản",     d:"Làm quen hợp âm cần lực tay và chuyển chậm.",         r:"Chơi được Bm phiên bản dễ trong vòng cơ bản.",          p:"G - D - Em - Bm chậm, 15 vòng.",                        c:["Bm dễ","Bm"],        bpm:62},
-  {n:11, t:"Hợp âm G7 và E7",        d:"Thêm màu dominant để kết câu bài hát.",               r:"Biết dùng G7/E7 trong vòng đệm đơn giản.",              p:"C - Am - Dm - G7, 20 vòng.",                            c:["G7","E7"],           bpm:66},
-  {n:12, t:"Chuyển Am - C - G - Em", d:"Luyện chuyển mượt giữa các hợp âm đã học.",           r:"Không dừng quá lâu khi đổi hợp âm.",                    p:"Luyện 10 phút/ngày, ghi âm kiểm tra nhịp.",             c:["Am","C","G","Em"],   bpm:68},
-  {n:13, t:"Chuyển C - G - D - Em",  d:"Vòng hợp âm phổ biến trong nhiều bài hát.",           r:"Chơi vòng 4 hợp âm liên tục trong 1 phút.",             p:"Quay video vòng C - G - D - Em.",                       c:["C","G","D","Em"],    bpm:70},
-  {n:14, t:"Ôn 14 hợp âm",           d:"Kiểm tra tất cả hợp âm trưởng/thứ đã học.",           r:"Nhớ mặt hợp âm và chuyển được theo vòng ngắn.",         p:"Checklist 14 hợp âm trong app.",                        c:[],                    bpm:70},
-  {n:15, t:"Nhịp Slow Rock",         d:"Đếm nhịp, cảm giác phách mạnh và nhẹ.",               r:"Gảy được mẫu Slow Rock cơ bản ở tempo chậm.",           p:"Metronome 60 bpm, lặp 3 phút không dừng.",              c:["Am","C"],            bpm:60},
-  {n:16, t:"Slow Rock: Am - C - G - Em", d:"Ghép mẫu đệm vào vòng hợp âm quen.",              r:"Vừa đổi hợp âm vừa giữ mẫu đệm đều.",                   p:"Quay 60 giây vòng Am - C - G - Em.",                    c:["Am","C","G","Em"],   bpm:64},
-  {n:17, t:"Slow Rock: C - G - Am - F",  d:"Luyện vòng pop/ballad phổ biến.",                 r:"Đệm được đoạn verse đơn giản của bài hát.",             p:"Chơi 2 vòng không vấp nhịp.",                           c:["C","G","Am","F"],    bpm:66},
-  {n:18, t:"Ghép lời hát đơn giản",  d:"Vừa đệm vừa hát hoặc ngân giai điệu.",                r:"Biết đặt hợp âm đúng vị trí lời bài hát.",              p:"Chọn 1 bài dễ và đánh dấu điểm đổi hợp âm.",            c:[],                    bpm:66},
-  {n:19, t:"Sửa lỗi nhịp Slow Rock", d:"Chậm nhịp, nhanh nhịp, đổi hợp âm bị khựng.",         r:"Tự nghe lỗi và quay lại tempo chậm.",                   p:"Ghi âm 2 bản: chậm và tốc độ mục tiêu.",                c:[],                    bpm:62},
-  {n:20, t:"Kiểm tra Slow Rock",     d:"Đệm một bài ngắn với vòng hợp âm đã học.",            r:"Đệm được bài đầu tiên ở mức cơ bản.",                   p:"Nộp video Slow Rock 1 đoạn verse/điệp khúc.",           c:[],                    bpm:68},
-  {n:21, t:"Nhịp Ballad cơ bản",     d:"Mẫu rải/quạt nhẹ cho bài chậm.",                      r:"Chơi được mẫu Ballad chậm và đều.",                     p:"Lặp mẫu Ballad 5 phút với C.",                          c:["C"],                 bpm:66},
-  {n:22, t:"Ballad: C - G - Am - F", d:"Ghép hợp âm vào mẫu đệm mềm.",                        r:"Đệm được vòng Ballad phổ biến.",                        p:"C - G - Am - F, 20 vòng chậm.",                         c:["C","G","Am","F"],    bpm:70},
-  {n:23, t:"Ballad: G - D - Em - C", d:"Vòng hợp âm dễ ứng dụng cho nhiều bài.",              r:"Chuyển hợp âm mượt khi tay phải vẫn giữ nhịp.",         p:"Quay 60 giây vòng G - D - Em - C.",                     c:["G","D","Em","C"],    bpm:72},
-  {n:24, t:"Đệm hát Ballad",         d:"Đặt hợp âm theo câu hát, vào đúng ô nhịp.",           r:"Đệm và hát được một đoạn ngắn không mất nhịp.",         p:"Tập 1 bài Ballad yêu thích ở tempo chậm.",              c:[],                    bpm:72},
-  {n:25, t:"Tăng giảm lực tay phải", d:"Nhấn nhẹ verse, mạnh hơn điệp khúc.",                 r:"Biết làm bài hát có sắc thái hơn.",                     p:"Đánh cùng vòng hợp âm với 2 mức lực khác nhau.",        c:[],                    bpm:72},
-  {n:26, t:"Kiểm tra Ballad",        d:"Đệm một bài chậm có verse và điệp khúc.",             r:"Đệm hát Ballad cơ bản, đều và dễ nghe.",                p:"Nộp video Ballad 90 giây.",                             c:[],                    bpm:74},
-  {n:27, t:"Kỹ thuật quạt chả",      d:"Hướng xuống/lên, cổ tay thả lỏng.",                   r:"Quạt được mẫu cơ bản không bị cứng tay.",               p:"Quạt dây chết 5 phút để ổn tay phải.",                  c:[],                    bpm:76},
-  {n:28, t:"Quạt chả: C - G - Am - F", d:"Ghép tay phải vào vòng hợp âm quen.",               r:"Đổi hợp âm không làm rơi nhịp quạt.",                   p:"Chơi 20 vòng, ưu tiên đều nhịp.",                       c:["C","G","Am","F"],    bpm:80},
-  {n:29, t:"Nhấn và ngắt",           d:"Tạo điểm nhấn cho điệp khúc.",                        r:"Biết làm mẫu quạt có groove rõ hơn.",                   p:"Luyện nhấn phách 2 và 4 ở tempo chậm.",                 c:[],                    bpm:78},
-  {n:30, t:"Ứng dụng bài vui/nhanh", d:"Chọn bài có tiết tấu rõ để tập quạt.",                r:"Đệm được đoạn điệp khúc năng lượng hơn.",               p:"Nộp video 60 giây điệp khúc.",                          c:[],                    bpm:88},
-  {n:31, t:"Đổi Ballad ↔ quạt chả",  d:"Verse nhẹ, điệp khúc mạnh.",                          r:"Biết đổi kiểu đệm theo cấu trúc bài hát.",              p:"Tập 1 verse Ballad và 1 chorus quạt chả.",              c:[],                    bpm:82},
-  {n:32, t:"Kiểm tra quạt chả",      d:"Đệm một bài ngắn với kỹ thuật nhấn/ngắt.",            r:"Chơi được quạt chả cơ bản trong bài hát.",              p:"Nộp video bài quạt chả 90 giây.",                       c:[],                    bpm:84},
-  {n:33, t:"Ôn 14 hợp âm",           d:"Kiểm tra trí nhớ hợp âm và tốc độ chuyển.",           r:"Tự chọn hợp âm đúng khi nhìn sheet bài đơn giản.",      p:"Checklist hợp âm: đạt / chưa đạt / cần luyện thêm.",    c:[],                    bpm:80},
-  {n:34, t:"Ôn 3 kiểu đệm",          d:"Slow Rock, Ballad, quạt chả.",                        r:"Biết chọn kiểu đệm phù hợp bài chậm hoặc vui.",         p:"Đệm cùng một vòng hợp âm bằng 3 kiểu khác nhau.",       c:[],                    bpm:78},
-  {n:35, t:"Chuẩn bị bài tốt nghiệp",d:"Chọn bài, chia đoạn, đánh dấu hợp âm.",               r:"Có bản dựng hoàn chỉnh để biểu diễn / ghi hình.",       p:"Tập full bài và ghi lại lỗi cần sửa.",                  c:[],                    bpm:76},
-  {n:36, t:"Bài tốt nghiệp",         d:"Đệm hát một bài hoàn chỉnh ở mức cơ bản.",            r:"Hoàn thành trình độ cơ bản, biết tự luyện bài mới.",    p:"Giáo viên nhận xét và gợi ý lộ trình tiếp theo.",       c:[],                    bpm:76}
+  {n:1, ch:1, no:1, t:"Tư thế cầm guitar", d:"Cách ngồi, ôm đàn và đặt tay sao cho không mỏi.", r:"Ngồi và ôm đàn đúng, chơi lâu không đau lưng hay mỏi vai.", p:"Ngồi đúng tư thế 5 phút, soi gương kiểm tra lưng và vai.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-1/", strum:"", video:""},
+  {n:2, ch:1, no:2, t:"Các bộ phận chính đàn guitar", d:"Đầu đàn, cần đàn, thùng đàn, ngựa đàn, khoá dây và tên gọi từng phần.", r:"Gọi đúng tên từng bộ phận khi nghe hướng dẫn.", p:"Chỉ và đọc tên 8 bộ phận trên cây đàn của bạn.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-2-cac-bo-phan-chinh-dan-guitar/", strum:"", video:""},
+  {n:3, ch:1, no:3, t:"Hiểu về 2 bàn tay", d:"Vai trò tay trái bấm phím và tay phải gảy hoặc quạt.", r:"Biết mỗi tay làm gì và đặt tay đúng vị trí xuất phát.", p:"Đặt tay trái lên cần, tay phải lên dây, giữ yên 2 phút cho quen.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/hieu-ve-2-ban-tay/", strum:"", video:""},
+  {n:4, ch:1, no:4, t:"Cách lên dây đàn (dùng App)", d:"Lên dây chuẩn E-A-D-G-B-E bằng ứng dụng.", r:"Tự lên dây đàn trước mỗi buổi tập.", p:"Dùng mục Luyện tập → Lên dây trong app này để chỉnh đủ 6 dây.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-4-cach-len-day-dan-dung-app/", strum:"", video:""},
+  {n:5, ch:2, no:1, t:"7 nốt nhạc căn bản", d:"Đô Rê Mi Fa Sol La Si và ký hiệu C D E F G A B.", r:"Đọc được tên nốt theo cả hai cách gọi.", p:"Đọc xuôi và đọc ngược 7 nốt, 10 lần.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-5-7-not-nhac-can-ban/", strum:"", video:""},
+  {n:6, ch:2, no:2, t:"Nốt nhạc từ ngăn 1 đến ngăn 5", d:"Vị trí nốt trên 5 ngăn đầu, và cách lên dây không cần app.", r:"Tìm được nốt trên cần đàn và tự so dây bằng tai.", p:"Dò tên nốt trên dây 6 và dây 5 từ ngăn 1 đến ngăn 5.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-6-not-nhac-tu-ngan-1-ngan-5-len-day-khong-dung-app/", strum:"", video:""},
+  {n:7, ch:2, no:3, t:"Nốt nhạc từ ngăn 5 trở đi", d:"Ý nghĩa ngăn 12 và cách các nốt lặp lại.", r:"Hiểu vì sao ngăn 12 lặp lại nốt dây buông.", p:"So sánh tiếng dây buông với ngăn 12 trên từng dây.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-7-not-nhac-tu-ngan-5-tro-di-y-nghia-ngan-12/", strum:"", video:""},
+  {n:8, ch:2, no:4, t:"Các nốt thăng (#) và giáng (b)", d:"Nửa cung, nguyên cung, nốt thăng và nốt giáng.", r:"Biết đọc tên nốt ở mọi ngăn trên cần đàn.", p:"Đọc tên đủ 12 nốt trên dây 6 từ ngăn 1 tới ngăn 12.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-8-cac-not-thang-not-giang-b/", strum:"", video:""},
+  {n:9, ch:3, no:1, t:"Nhịp 4/4 — học Em và Am", d:"Cách đếm 4 phách và hai hợp âm thứ dễ nhất.", r:"Đếm được 1-2-3-4 đều và bấm sạch Em, Am.", p:"Bật metronome 60 bpm, gảy xuống 4 phách với Em rồi Am.", c:["Em", "Am"], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-9-nhip/", strum:"", video:""},
+  {n:10, ch:3, no:2, t:"Bấm hợp âm đúng cách", d:"Đặt ngón dựng, bấm sát phím đồng, tránh chạm dây bên cạnh.", r:"Hợp âm kêu sạch cả 6 dây, không bị rè.", p:"Bấm Em rồi gảy rời từng dây, nghe dây nào rè thì chỉnh ngón.", c:["Em", "Am"], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-10-bam-hop-am-dung-cach/", strum:"", video:""},
+  {n:11, ch:3, no:3, t:"Chuyển hợp âm với nhịp 4/4 (Am - Em)", d:"Luyện chuyển tay trái mà tay phải vẫn giữ đều nhịp.", r:"Đổi Am - Em đúng đầu ô nhịp, không khựng.", p:"Chuyển Am - Em mỗi 4 phách, 20 vòng ở 60 bpm.", c:["Am", "Em"], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-11-chuyen-hop-am-voi-nhip-4-4-am-em/", strum:"", video:""},
+  {n:12, ch:3, no:4, t:"Nhịp 2/4 — học C, G, F", d:"Nhịp 2 phách và ba hợp âm trưởng quan trọng.", r:"Bấm được C, G và phương án F cơ bản.", p:"Chuyển C - G mỗi 2 phách, sau đó thêm F.", c:["C", "G", "F"], bpm:62, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-12-nhip-2-4-hoc-c-g-f/", strum:"", video:""},
+  {n:13, ch:3, no:5, t:"Điệu Disco (2/4)", d:"Mẫu đệm nhanh, khoẻ trên nhịp 2/4.", r:"Quạt được Disco đều tay ở tempo chậm.", p:"Mở máy đệm điệu Disco, quạt theo 3 phút không dừng.", c:["C", "G"], bpm:76, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-13-dieu-disco-2-4/", strum:"disco", video:""},
+  {n:14, ch:3, no:6, t:"Điệu Cha cha cha (4/4)", d:"Cảm giác đảo phách đặc trưng của cha cha cha.", r:"Giữ được nhịp khi tay phải đảo phách.", p:"Đệm C - Am - F - G bằng điệu cha cha cha, 10 vòng.", c:["C", "Am", "F", "G"], bpm:80, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-14-dieu-cha-cha-cha-4-4-updating/", strum:"chacha", video:""},
+  {n:15, ch:3, no:7, t:"Điệu Rumba (4/4)", d:"Mẫu rải mềm, rất hay dùng cho nhạc trữ tình.", r:"Đệm được Rumba chậm và đều.", p:"Đệm Am - Dm - E7 - Am bằng Rumba, 10 vòng.", c:["Am", "Dm", "E7"], bpm:72, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-19-dieu-rumba-4-4/", strum:"rumba", video:""},
+  {n:16, ch:3, no:8, t:"Điệu Bolero (4/4)", d:"Điệu quen thuộc nhất của nhạc vàng.", r:"Đệm được Bolero cơ bản, vào đúng phách.", p:"Đệm một đoạn bolero với Am - Dm - E7, 10 vòng.", c:["Am", "Dm", "E7"], bpm:66, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-20-dieu-bolero-4-4/", strum:"bolero", video:""},
+  {n:17, ch:4, no:1, t:"Nhịp 3/4 — học Dm và G7", d:"Nhịp 3 phách, phách 1 mạnh, và hai hợp âm mới.", r:"Đếm được 1-2-3 và bấm Dm, G7.", p:"Chuyển C - G7 - Dm mỗi 3 phách, 15 vòng.", c:["Dm", "G7"], bpm:64, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-14-nhip-3-4-hoc-dm-g7/", strum:"", video:""},
+  {n:18, ch:4, no:2, t:"Điệu Waltz (3/4)", d:"Bass rồi hai lần quạt nhẹ — mẫu 3/4 kinh điển.", r:"Đệm được Waltz đều, phách 1 rõ.", p:"Đệm C - G7 - C bằng Waltz, 15 vòng.", c:["C", "G7"], bpm:96, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-15-dieu-waltz-3-4/", strum:"waltz", video:""},
+  {n:19, ch:4, no:3, t:"Điệu Boston (3/4)", d:"Waltz chậm, rải mềm hơn cho bài trữ tình.", r:"Phân biệt được Boston và Waltz khi nghe.", p:"Đệm cùng vòng hợp âm bằng Waltz rồi Boston để so sánh.", c:["C", "G7", "Am"], bpm:76, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-16-dieu-boston-3-4/", strum:"boston", video:""},
+  {n:20, ch:4, no:4, t:"Nhịp 6/8 — học Dm7, E và E7", d:"Nhịp 6 phách chia hai nhóm ba, cùng ba hợp âm mới.", r:"Đếm 1-2-3 / 4-5-6 đều và bấm được E, E7, Dm7.", p:"Chuyển Am - Dm7 - E7 theo nhịp 6/8, 15 vòng.", c:["Dm7", "E", "E7"], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-17-nhip-6-8-hoc-dm7-e-va-e7/", strum:"", video:""},
+  {n:21, ch:4, no:5, t:"Điệu Slow Rock (6/8)", d:"Mẫu đệm 6/8 dùng cho rất nhiều bài chậm.", r:"Đệm được Slow Rock cơ bản, giữ đều 3 phút.", p:"Mở máy đệm Slow Rock, đệm Am - C - G - Em.", c:["Am", "C", "G", "Em"], bpm:64, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-18-dieu-slowrock-6-8/", strum:"slowrock", video:""},
+  {n:22, ch:4, no:6, t:"Slow Rock và liên 3 — 6/8 với 2/4", d:"Hiểu liên 3 để thấy vì sao 6/8 nghe khác 2/4.", r:"Nghe ra sự khác nhau giữa 6/8 và 2/4.", p:"Đệm cùng một bài bằng 6/8 rồi 2/4, ghi âm so sánh.", c:["Am", "C"], bpm:64, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-6-slowrock-hieu-ve-lien-3-6-8-vs-2-4/", strum:"slowrock", video:""},
+  {n:23, ch:4, no:7, t:"Điệu Ballad (4/4)", d:"Mẫu đệm phổ biến nhất cho nhạc trẻ.", r:"Đệm được Ballad và hát theo không mất nhịp.", p:"Đệm C - G - Am - F bằng Ballad, 20 vòng.", c:["C", "G", "Am", "F"], bpm:72, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-7/", strum:"ballad", video:""},
+  {n:24, ch:5, no:1, t:"Mẫu hình nốt đơn, nốt kép (4/4)", d:"Cách chia phách thành nốt đơn và nốt kép cho tay phải.", r:"Đọc được mẫu hình quạt trước khi tập.", p:"Vỗ tay theo mẫu nốt đơn rồi nốt kép ở 60 bpm.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-21-cach-di-chuyen-cua-tay-phai-4-beat/", strum:"", video:""},
+  {n:25, ch:5, no:2, t:"Strumming — bài tập 1", d:"Bài tập tay phải đầu tiên, quạt xuống đều tay.", r:"Cổ tay thả lỏng, quạt đều không cứng tay.", p:"Quạt dây chết 5 phút theo metronome 60 bpm.", c:[], bpm:60, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-22-cach-di-chuyen-cua-tay-phai-8-beat/", strum:"", video:""},
+  {n:26, ch:5, no:3, t:"Strumming — bài tập 2", d:"Thêm quạt lên, giữ đều tốc độ tay.", r:"Xuống lên đều nhau, không bị nhanh dần.", p:"Quạt xuống-lên liên tục 3 phút ở 70 bpm.", c:[], bpm:70, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-23-cach-di-chuyen-cua-tay-phai-16-beat/", strum:"", video:""},
+  {n:27, ch:5, no:4, t:"Strumming — bài tập 3", d:"Mẫu quạt có ngắt và nhấn.", r:"Tạo được điểm nhấn mà không rớt nhịp.", p:"Luyện nhấn phách 2 và 4 ở tempo chậm.", c:[], bpm:72, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-24-strumming-bai-tap-3/", strum:"", video:""},
+  {n:28, ch:6, no:1, t:"Strumming 4/4 — Ballad cơ bản", d:"Ghép mẫu quạt Ballad vào vòng hợp âm.", r:"Đệm trọn một đoạn bài bằng Ballad.", p:"Đệm C - G - Am - F, 20 vòng, ưu tiên đều nhịp.", c:["C", "G", "Am", "F"], bpm:72, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-29-strumming-4-4-ballad-co-ban/", strum:"ballad", video:""},
+  {n:29, ch:6, no:2, t:"Strumming 4/4 đảo phách — Cha cha cha", d:"Quạt đảo phách cho điệu cha cha cha.", r:"Giữ groove khi tay phải đảo phách.", p:"Đệm C - Am - F - G bằng cha cha cha, 15 vòng.", c:["C", "Am", "F", "G"], bpm:80, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-30-strumming-4-4-cha-cha-cha-co-ban/", strum:"chacha", video:""},
+  {n:30, ch:6, no:3, t:"Strumming 4/4 — Bolero cơ bản", d:"Mẫu rải và quạt của Bolero.", r:"Đệm được một đoạn bolero hoàn chỉnh.", p:"Đệm Am - Dm - E7 - Am, 15 vòng.", c:["Am", "Dm", "E7"], bpm:66, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-32-strumming-4-4-bolero-co-ban/", strum:"bolero", video:""},
+  {n:31, ch:6, no:4, t:"Strumming 3/4 — Waltz và Boston", d:"Mẫu quạt cho nhóm nhịp 3/4.", r:"Chọn đúng Waltz hay Boston tuỳ tốc độ bài.", p:"Đệm cùng vòng hợp âm bằng cả hai điệu.", c:["C", "G7", "Am"], bpm:88, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-30-strumming-3-4-waltz-boston-co-ban/", strum:"waltz", video:""},
+  {n:32, ch:6, no:5, t:"Strumming 6/8 — Slow Rock cơ bản", d:"Mẫu quạt Slow Rock hoàn chỉnh.", r:"Đệm hát được một bài Slow Rock cơ bản.", p:"Đệm Am - C - G - Em, quay video 60 giây.", c:["Am", "C", "G", "Em"], bpm:64, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/bai-31-struming-6-8-slowrock-co-ban/", strum:"slowrock", video:""},
+  {n:33, ch:6, no:6, t:"Tổng kết về điệu nhạc", d:"Tư duy chọn điệu phù hợp với từng bài hát.", r:"Nghe một bài là biết nên đệm điệu nào.", p:"Chọn 3 bài yêu thích, quyết định điệu cho từng bài.", c:[], bpm:72, url:"https://guitardemhat.com/courses/dem-hat-co-ban/lessons/strumming-4-4-rumba-co-ban/", strum:"", video:""},
 ];
 
 /* Sơ đồ hợp âm: frets theo thứ tự dây 6→1 (E A D G B e), -1 = không đánh, 0 = buông.
@@ -676,6 +733,7 @@ const CHORDS = [
   {name:"E7",    group:"Dominant",frets:[0,2,0,1,0,0],    fingers:[0,2,0,1,0,0], tip:"Dẫn về Am, hay dùng trong bolero."},
   {name:"A7",    group:"Dominant",frets:[-1,0,2,0,2,0],   fingers:[0,0,2,0,3,0], tip:"Dẫn về D hoặc Dm."},
   {name:"D7",    group:"Dominant",frets:[-1,-1,0,2,1,2],  fingers:[0,0,0,2,1,3], tip:"Dẫn về G, tay giống D nhưng đổi 2 ngón."},
+  {name:"Dm7",   group:"Dominant",frets:[-1,-1,0,2,1,1],  fingers:[0,0,0,2,1,1], tip:"Dm bỏ bớt một ngón, dùng nhiều trong nhịp 6/8."},
   {name:"F",     group:"Chặn",    frets:[1,3,3,2,1,1],    fingers:[1,3,4,2,1,1], barre:{fret:1,from:0,to:5}, tip:"Ngón 1 chặn cả 6 dây ngăn 1, ép sát phím đồng."},
   {name:"Bm",    group:"Chặn",    frets:[-1,2,4,4,3,2],   fingers:[0,1,3,4,2,1], barre:{fret:2,from:1,to:5}, tip:"Dạng Am dời lên ngăn 2."},
   {name:"B",     group:"Chặn",    frets:[-1,2,4,4,4,2],   fingers:[0,1,2,3,4,1], barre:{fret:2,from:1,to:5}, tip:"Dạng A dời lên ngăn 2."},
@@ -685,24 +743,34 @@ const CHORDS = [
 ];
 const CHORD_BY_NAME = Object.fromEntries(CHORDS.map(c => [c.name, c]));
 
-/* Mẫu đệm: slots = số phách nhỏ trong 1 vòng, hits mô tả từng slot.
-   d = quạt xuống, u = quạt lên, b = bass (gảy dây trầm), null = nghỉ */
+/* 8 điệu cơ bản trong giáo trình. beats = số phách chính mỗi ô nhịp,
+   sub = số phách nhỏ, hits mô tả từng phách nhỏ:
+   d = quạt xuống, u = quạt lên, b = bass (gảy dây trầm), null = nghỉ. */
 const STRUM_STYLES = [
-  { id:"slowrock", name:"Slow Rock · 6/8", sub:6, per:1, defBpm:64,
-    hits:["b",null,"u","d",null,"u"],
-    note:"Đếm 1-2-3 / 4-5-6. Phách 1 gảy bass, phách 4 quạt xuống." },
-  { id:"ballad", name:"Ballad · 4/4", sub:8, per:1, defBpm:72,
-    hits:["b",null,"d","u",null,"u","d","u"],
-    note:"Mẫu kinh điển cho bài chậm: bass - xuống lên - lên xuống lên." },
-  { id:"quatcha", name:"Quạt chả · 4/4", sub:8, per:1, defBpm:88,
-    hits:["d",null,"d","u",null,"u","d","u"],
-    note:"Cổ tay thả lỏng, nhấn mạnh phách 2 và 4." },
-  { id:"bolero", name:"Bolero rải · 4/4", sub:8, per:1, defBpm:66,
+  { id:"disco",    name:"Disco · 2/4",       beats:2, sub:4, defBpm:76,
+    hits:["b","d","u","d"],
+    note:"Nhịp 2 phách, quạt khoẻ và đều tay." },
+  { id:"chacha",   name:"Cha cha cha · 4/4", beats:4, sub:8, defBpm:80,
+    hits:["b",null,"d",null,"d","u","d","u"],
+    note:"Đặc trưng là đảo phách ở cuối ô nhịp." },
+  { id:"rumba",    name:"Rumba · 4/4",       beats:4, sub:8, defBpm:72,
     hits:["b",null,"u","d","u",null,"d","u"],
-    note:"Rải nhẹ từng dây, hợp bài trữ tình." },
-  { id:"downs", name:"Gảy xuống · 4/4", sub:4, per:1, defBpm:60,
-    hits:["d","d","d","d"],
-    note:"Bài tập buổi 4: chỉ gảy xuống, giữ nhịp thật đều." }
+    note:"Rải mềm, hợp nhạc trữ tình." },
+  { id:"bolero",   name:"Bolero · 4/4",      beats:4, sub:8, defBpm:66,
+    hits:["b",null,"u","d",null,"u","d","u"],
+    note:"Chậm, sâu, rải từng dây cho rõ tiếng." },
+  { id:"waltz",    name:"Waltz · 3/4",       beats:3, sub:3, defBpm:96,
+    hits:["b","d","d"],
+    note:"Bass phách 1, hai lần quạt nhẹ ở phách 2 và 3." },
+  { id:"boston",   name:"Boston · 3/4",      beats:3, sub:6, defBpm:76,
+    hits:["b",null,"u","d",null,"u"],
+    note:"Waltz chậm lại, rải mềm hơn." },
+  { id:"slowrock", name:"Slow Rock · 6/8",   beats:6, sub:6, defBpm:64,
+    hits:["b",null,"u","d",null,"u"],
+    note:"Đếm 1-2-3 / 4-5-6, phách 1 gảy bass, phách 4 quạt xuống." },
+  { id:"ballad",   name:"Ballad · 4/4",      beats:4, sub:8, defBpm:72,
+    hits:["b",null,"d","u",null,"u","d","u"],
+    note:"Mẫu phổ biến nhất cho nhạc trẻ." }
 ];
 
 const PROGRESSIONS = [
@@ -728,7 +796,12 @@ const todayKey = () => new Date().toISOString().slice(0,10);
 
 const defaultState = () => ({
   name:"", branch:"Lớp guitar đệm hát tại quán cà phê",
-  done:[],            // số buổi đã hoàn thành
+
+  // Tài khoản học viên tự đăng ký. `sent` = đã gửi được về trung tâm chưa,
+  // để còn gửi lại nếu lần đầu rớt mạng.
+  acct:{ name:"", email:"", phone:"", area:"", areaOther:"", at:"", sent:false },
+
+  done:[],            // số bài đã hoàn thành
   chords:[],          // tên hợp âm đã đánh dấu thuộc
   days:[],            // các ngày đã luyện (YYYY-MM-DD)
   minutes:{},         // { "YYYY-MM-DD": phút }
@@ -751,7 +824,8 @@ function load(){
     // `cls` là object lồng nên phải trộn riêng, không thì bản lưu cũ thiếu
     // trường nào sẽ ghi đè cả cụm và render ra undefined.
     const merged = Object.assign(base, saved);
-    merged.cls = Object.assign(defaultState().cls, saved.cls || {});
+    merged.cls  = Object.assign(defaultState().cls,  saved.cls  || {});
+    merged.acct = Object.assign(defaultState().acct, saved.acct || {});
     if(!Array.isArray(merged.log)) merged.log = [];
     return merged;
   }catch(e){ return defaultState(); }
@@ -1062,9 +1136,9 @@ const strum = {
   toggle(){ this.on ? this.stop() : this.start(); },
   schedule(){
     const st = this.style();
-    const beatsPerBar = st.sub === 6 ? 6 : 4;
-    const subPerBeat  = st.sub / beatsPerBar;
-    const dt = (60 / this.bpm) / subPerBeat;
+    // Số phách nhỏ trên một phách chính lấy từ chính điệu đó, vì giáo trình có
+    // cả 2/4, 3/4, 4/4 lẫn 6/8 chứ không chỉ 4/4 và 6/8.
+    const dt = (60 / this.bpm) / (st.sub / st.beats);
     while(this.next < ctx.currentTime + 0.14){
       const slot = this.step % st.sub;
       const bar  = Math.floor(this.step / st.sub);
@@ -1208,7 +1282,7 @@ function renderToday(){
   $("#todayTitle").textContent = "Bài " + String(l.n).padStart(2,"0") + " · " + l.t;
   $("#todayGoal").textContent = l.d;
   $("#todayBar").style.width = Math.round(doneCount / LESSONS.length * 100) + "%";
-  $("#todayCount").textContent = doneCount + " / " + LESSONS.length + " buổi";
+  $("#todayCount").textContent = doneCount + " / " + LESSONS.length + " bài";
   $("#todayStage").textContent = "Chặng " + st.id + " · " + st.tag;
   $("#drillText").textContent = l.p;
 
@@ -1255,7 +1329,7 @@ function renderPath(){
              '<div class="txt"><b>' + l.t + '</b><span>' + l.d + '</span></div>' + badge + '</button>';
     }).join("");
     return '<div class="stage-head"><h3>Chặng ' + s.id + ': ' + s.name + '</h3>' +
-           '<span>Buổi ' + s.range[0] + '-' + s.range[1] + '</span></div>' +
+           '<span>' + (s.range[1] - s.range[0] + 1) + ' bài</span></div>' +
            '<p class="muted" style="margin:0 2px 9px;">' + s.note + '</p>' + rows;
   }).join("");
 }
@@ -1270,14 +1344,40 @@ function renderChords(){
   $("#chordPill").textContent = S.chords.length + " thuộc";
 }
 
+function areaLabel(){
+  const a = S.acct.area;
+  if(!a) return "";
+  return a === "Khu vực khác" && S.acct.areaOther ? S.acct.areaOther : a;
+}
+
 function renderMe(){
-  $("#nameInput").value = S.name;
-  $("#branchInput").value = S.branch;
+  const a = S.acct;
+  $("#acName").value = a.name;
+  $("#acEmail").value = a.email;
+  $("#acPhone").value = a.phone;
+  $("#acArea").value = a.area || AREAS[0];
+  $("#acAreaOther").value = a.areaOther;
+  $("#acAreaOtherWrap").hidden = $("#acArea").value !== "Khu vực khác";
+
+  const pill = $("#acctPill");
+  const registered = !!(a.email && a.phone);
+  pill.textContent = !registered ? "Chưa đăng ký" : (a.sent ? "Đã đăng ký" : "Đã lưu, chưa gửi");
+  pill.className = "pill" + (registered ? (a.sent ? " done" : " now") : "");
+
+  $("#branchList").innerHTML = BRANCHES.map(b =>
+    '<div class="log-row"><div class="what"><b>' + escapeHtml(b.name) + '</b>' +
+    '<div class="muted">' + escapeHtml(b.address) + '</div></div>' +
+    '<span class="pill done">Đang mở</span></div>').join("") +
+    (areaLabel()
+      ? '<p class="muted" style="margin-top:10px;">Bạn đã đăng ký khu vực: <b>' +
+        escapeHtml(areaLabel()) + '</b>.</p>'
+      : "");
+
   $("#meLessons").textContent = S.done.length;
   $("#meChords").textContent = S.chords.length;
   $("#meDays").textContent = S.days.length;
   const st = stageOf(currentLesson().n);
-  $("#meStage").textContent = "Đang ở chặng " + st.id + " — " + st.name.toLowerCase() + ".";
+  $("#meStage").textContent = "Đang ở chương " + st.id + " — " + st.name.toLowerCase() + ".";
 }
 
 function renderBeats(){
@@ -1322,9 +1422,6 @@ function renderStrings(){
 
 /* ---------- màn hình chi tiết buổi học ---------- */
 
-/* Kiểu đệm gắn với từng chặng, để nút "máy đệm" vào thẳng điệu đang học. */
-const STAGE_STRUM = { 1:"downs", 3:"slowrock", 4:"ballad", 5:"quatcha" };
-
 let lessonBackTo = "path";
 
 function openLesson(n, backTo){
@@ -1336,7 +1433,13 @@ function openLesson(n, backTo){
   const done = S.done.includes(n);
   const prev = LESSONS.find(x => x.n === n - 1);
   const next = LESSONS.find(x => x.n === n + 1);
-  const strum = STRUM_STYLES.find(s => s.id === STAGE_STRUM[st.id]);
+  const strum = l.strum ? STRUM_STYLES.find(s => s.id === l.strum) : null;
+
+  // Video de trong thi khong ve trinh phat; dan link vao LESSONS la tu hien.
+  const videoHtml = l.video
+    ? '<div class="card"><div class="card-head"><h3>Video bài giảng</h3></div>' +
+      '<div class="video-wrap">' + videoEmbed(l.video) + '</div></div>'
+    : '';
 
   const chordHtml = l.c.length
     ? l.c.map(name => CHORD_BY_NAME[name]).filter(Boolean).map(c =>
@@ -1348,18 +1451,18 @@ function openLesson(n, backTo){
             '<div class="tip">' + c.tip + '</div>' +
           '</div>' +
         '</div>').join("")
-    : '<p class="muted">Buổi này tập trung vào kỹ thuật, chưa thêm hợp âm mới. ' +
+    : '<p class="muted">Bài này tập trung vào lý thuyết và tay phải, chưa thêm hợp âm mới. ' +
       'Tranh thủ ôn lại ở thư viện hợp âm.</p>';
 
   $("#lessonDetail").innerHTML =
     '<div class="hero">' +
-      '<div class="eyebrow">Buổi ' + String(n).padStart(2,"0") + ' / 36 · Chặng ' + st.id + ' · ' + st.tag + '</div>' +
+      '<div class="eyebrow">Chương ' + l.ch + ' · Bài ' + l.no + ' · ' + st.tag + '</div>' +
       '<h2>' + l.t + '</h2>' +
       '<p>' + l.d + '</p>' +
-      (done ? '<p class="done-flag">✓ Bạn đã hoàn thành buổi này</p>' : '') +
+      (done ? '<p class="done-flag">✓ Bạn đã học xong bài này</p>' : '') +
     '</div>' +
 
-    '<div class="card"><div class="card-head"><h3>Học xong buổi này bạn sẽ</h3></div>' +
+    '<div class="card"><div class="card-head"><h3>Học xong bài này bạn sẽ</h3></div>' +
       '<p>' + l.r + '</p></div>' +
 
     '<div class="card"><div class="card-head"><h3>Bài luyện ở nhà</h3></div>' +
@@ -1372,24 +1475,42 @@ function openLesson(n, backTo){
           : '') +
       '</div></div>' +
 
-    '<div class="card"><div class="card-head"><h3>Hợp âm trong buổi</h3></div>' + chordHtml + '</div>' +
+    videoHtml +
+    '<div class="card"><div class="card-head"><h3>Hợp âm trong bài</h3></div>' + chordHtml + '</div>' +
 
     '<button class="btn' + (done ? " warn" : "") + '" data-act="toggle-done" data-n="' + n + '">' +
       (done ? "Bỏ đánh dấu hoàn thành" : "✓ Đánh dấu đã học xong") + '</button>' +
+    (l.url ? '<a class="btn alt" href="' + l.url + '" target="_blank" rel="noopener" ' +
+      'style="margin-top:8px; text-decoration:none;">Xem bài trên guitardemhat.com ↗</a>' : '') +
 
     '<div class="pager">' +
       (prev
-        ? '<a data-lesson-nav="' + prev.n + '"><small>← Buổi ' + String(prev.n).padStart(2,"0") + '</small>' +
+        ? '<a data-lesson-nav="' + prev.n + '"><small>← Chương ' + prev.ch + ' · Bài ' + prev.no + '</small>' +
           '<b>' + prev.t + '</b></a>'
         : '<span class="spacer"></span>') +
       (next
-        ? '<a class="next" data-lesson-nav="' + next.n + '"><small>Buổi ' + String(next.n).padStart(2,"0") + ' →</small>' +
+        ? '<a class="next" data-lesson-nav="' + next.n + '"><small>Chương ' + next.ch + ' · Bài ' + next.no + ' →</small>' +
           '<b>' + next.t + '</b></a>'
         : '<span class="spacer"></span>') +
     '</div>';
 
   $("#lessonBack").textContent = lessonBackTo === "today" ? "← Hôm nay" : "← Lộ trình 36 buổi";
   show("lesson");
+}
+
+/* Nhan link YouTube (day du hoac rut gon) va link nhung san; con lai coi la
+   file video truc tiep. */
+function videoEmbed(url){
+  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  if(yt){
+    return '<iframe src="https://www.youtube.com/embed/' + yt[1] + '" title="Video bài giảng" ' +
+           'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture" ' +
+           'allowfullscreen loading="lazy"></iframe>';
+  }
+  if(/^https?:\/\/[^\s]+\.(mp4|webm|ogg)(\?|$)/i.test(url)){
+    return '<video src="' + url + '" controls playsinline preload="metadata"></video>';
+  }
+  return '<iframe src="' + url + '" title="Video bài giảng" allowfullscreen loading="lazy"></iframe>';
 }
 
 function chordNotes(c){
@@ -1766,10 +1887,65 @@ function selectTool(id){
 $$(".tool-tabs button").forEach(b => b.addEventListener("click", () => selectTool(b.dataset.tool)));
 
 /* hồ sơ */
-$("#btnSaveProfile").addEventListener("click", () => {
-  S.name = $("#nameInput").value.trim();
-  S.branch = $("#branchInput").value;
-  save(); renderToday(); toast("Đã lưu thông tin");
+$("#acArea").addEventListener("change", e => {
+  $("#acAreaOtherWrap").hidden = e.target.value !== "Khu vực khác";
+});
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Số Việt Nam: bỏ khoảng trắng/gạch rồi kiểm tra 9-11 chữ số, cho phép +84. */
+function normPhone(raw){
+  const d = raw.replace(/[^0-9+]/g, "").replace(/^\+84/, "0");
+  return /^0\d{8,10}$/.test(d) ? d : "";
+}
+
+/* Gửi bằng form-encoded + no-cors: Google Apps Script nhận được mà không cần
+   cấu hình CORS. Đổi lại là không đọc được kết quả, nên chỉ coi là "đã gửi"
+   khi fetch không ném lỗi. */
+async function sendLead(acct){
+  if(!LEAD_ENDPOINT) return false;
+  const body = new URLSearchParams({
+    name: acct.name, email: acct.email, phone: acct.phone,
+    area: acct.area === "Khu vực khác" ? acct.areaOther : acct.area,
+    at: acct.at, source: "app"
+  });
+  try{
+    await fetch(LEAD_ENDPOINT, { method:"POST", mode:"no-cors", body });
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+$("#btnRegister").addEventListener("click", async () => {
+  const err = $("#acError");
+  const name = $("#acName").value.trim();
+  const email = $("#acEmail").value.trim();
+  const phone = normPhone($("#acPhone").value);
+  const area = $("#acArea").value;
+  const areaOther = $("#acAreaOther").value.trim();
+
+  const fail = m => { err.textContent = m; err.hidden = false; };
+  err.hidden = true;
+
+  if(!name) return fail("Bạn nhập giúp họ tên nhé.");
+  if(!EMAIL_RE.test(email)) return fail("Email chưa đúng định dạng.");
+  if(!phone) return fail("Số điện thoại chưa đúng. Ví dụ: 0912345678");
+  if(area === "Khu vực khác" && !areaOther) return fail("Bạn ghi rõ khu vực muốn học nhé.");
+
+  S.acct = { name, email, phone, area, areaOther, at:new Date().toISOString(), sent:false };
+  S.name = name;
+  save();
+
+  const btn = $("#btnRegister");
+  btn.disabled = true; btn.textContent = "Đang gửi...";
+  S.acct.sent = await sendLead(S.acct);
+  btn.disabled = false; btn.textContent = "Đăng ký / cập nhật";
+  save(); renderMe(); renderToday();
+
+  toast(S.acct.sent
+    ? "Đã đăng ký! Trung tâm sẽ liên hệ bạn sớm."
+    : "Đã lưu thông tin trên máy bạn.");
 });
 $("#btnExport").addEventListener("click", async () => {
   const text = JSON.stringify(S, null, 2);
@@ -1803,6 +1979,7 @@ document.addEventListener("visibilitychange", () => { if(document.hidden) stopAl
    ===================================================================== */
 $("#strumStyle").innerHTML = STRUM_STYLES.map(s => '<option value="' + s.id + '">' + s.name + '</option>').join("");
 $("#strumProg").innerHTML  = PROGRESSIONS.map((p, i) => '<option value="' + i + '">' + p.name + '</option>').join("");
+$("#acArea").innerHTML = AREAS.map(a => '<option>' + a + '</option>').join("");
 $("#metroBeats").value = String(S.beats);
 strum.bpm = strum.style().defBpm;
 
