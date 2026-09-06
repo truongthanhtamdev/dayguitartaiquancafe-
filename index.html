@@ -520,6 +520,7 @@
       <p>Người mới rất dễ mua nhầm đàn cần cao, bấm đau tay rồi bỏ. Ghé quán thử trước, chọn cây hợp tay bạn.</p>
     </div>
 
+    <div id="shopPartner"></div>
     <div id="guitarList"></div>
 
     <div class="card">
@@ -816,9 +817,14 @@ const CONTACT_ZALO  = "0965817021";
    để khách hỏi tư vấn và đặt lịch học. Để trống thì ẩn nút. */
 const FANPAGE = "dayguitartaiquancafe";
 
-/* Dan dang ban. Them mot dong la app tu hien them mot the.
-   `img` de trong thi the van chay, chi khong co anh.
-   Vi du:
+/* Bán đàn do bên đối tác lo. Điền SHOP_URL là mục bán đàn hiện nút dẫn sang
+   đó; để trống thì chỉ mời khách nhắn fanpage tư vấn. */
+const SHOP_NAME = "Sài Thành Guitar";
+const SHOP_URL  = "https://saithanhguitar.com/danh-muc/guitar";
+
+/* Vài cây đàn muốn giới thiệu ngay trong app (không bắt buộc). Thêm một dòng
+   là app hiện thêm một thẻ; `img` để trống thì thẻ vẫn chạy, chỉ không có ảnh.
+   Ví dụ:
      { name:"Guitar Acoustic Rosen G11", price:"1.850.000đ",
        note:"Gỗ ép, cần thẳng, hợp người mới tập", img:"dan/rosen-g11.jpg" }  */
 const GUITARS = [];
@@ -1586,9 +1592,18 @@ function renderShop(){
           (g.price ? '<span class="pill now">' + escapeHtml(g.price) + '</span>' : '') + '</div>' +
           (g.note ? '<p class="muted">' + escapeHtml(g.note) + '</p>' : '') +
         '</div>').join("")
+    : "";
+
+  // Đàn bán bên đối tác, nên nút chính là dẫn sang đó.
+  $("#shopPartner").innerHTML = SHOP_URL
+    ? '<div class="card"><div class="card-head"><h3>Xem đàn tại ' + escapeHtml(SHOP_NAME) + '</h3></div>' +
+      '<p class="muted" style="margin-bottom:11px;">Đàn do ' + escapeHtml(SHOP_NAME) +
+      ' cung cấp. Bạn xem mẫu và giá bên đó, cần tư vấn chọn cây nào thì nhắn bên mình.</p>' +
+      '<a class="btn" href="' + SHOP_URL + '" target="_blank" rel="noopener" ' +
+      'style="text-decoration:none;">Xem đàn tại ' + escapeHtml(SHOP_NAME) + ' ↗</a></div>'
     : '<div class="card"><div class="card-head"><h3>Đàn đang có</h3>' +
       '<span class="pill">Đang cập nhật</span></div>' +
-      '<p class="muted">Trung tâm đang cập nhật danh sách đàn kèm giá. Trong lúc đó ' +
+      '<p class="muted">Bên mình đang cập nhật danh sách đàn kèm giá. Trong lúc đó ' +
       'bạn cứ nhắn fanpage, bên mình tư vấn theo tầm giá bạn muốn.</p></div>';
 
   $("#shopContact").innerHTML = contactButtons();
